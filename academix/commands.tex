@@ -14,17 +14,9 @@
 % Author Formatting
 % ----------------------------------------------------------------------
 
-% Custom command to format author information for the document and cataloging
-\newcommand{\autorPoli}[5]{
-    \customAutor{\uppercase{{#1 #4 #5}}}% Full name in uppercase (First Middle Last)
-    \renewcommand{\PoliAutorFichaCatalografica}{{#5, #1 #3}}% Cataloging format
-    \renewcommand{\PoliAutorIniciaisMaisSobrenome}{{#2 #4 #5}}% Initials + Last name format
-}
-
 % Department information
-\newcommand{\PoliDepartamentoData}{}
-\newcommand{\departamento}[1]{\renewcommand{\PoliDepartamentoData}{#1}}
-\newcommand{\departamentoformat}{}
+\newcommand{\departamentData}{}
+\newcommand{\departament}[1]{\renewcommand{\departamentData}{#1}}
 
 % Document type information
 \newcommand{\documentType}{}
