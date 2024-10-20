@@ -1,0 +1,430 @@
+% -----------------------------------------------------------------------------
+% chapter.tex
+%
+% This file defines the chapter and section environments, including:
+%   - Custom formatting for chapter titles
+%   - Page numbering schemes for chapters
+%   - Automatic inclusion of chapters and sections in the Table of Contents
+%   - Support for starred chapters/sections that include centered titles
+%   - Custom formatting for sections, subsections, and other heading levels
+%
+% Redefinitions include handling of pretextual chapters, custom TOC entries,
+% and formatting of chapter and section headers.
+% -----------------------------------------------------------------------------
+
+% Define command to allow optional starred sections
+\def\customSectionDefinition#1#2{\@ifstar{\@dblarg{#2}}{\@dblarg{#1}}}
+
+% Redefine \chapter to include custom page style and manage pretextual chapters
+\renewcommand\chapter {
+    \if@openright\cleardoublepage\else\clearpage\fi
+    \thispagestyle{\chapterTitlePageStyle}
+    \ifthenelse{\boolean{inPretext}}{
+        \ifthenelse{\boolean{afterTOC}} {
+            \setboolean{inPretext}{false}
+            \BeginTextualPart
+        }{}
+    }{}
+    \global\@topnum\z@
+    \@afterindentfalse
+    \secdef\@chapter\@schapter
+}
+
+% Pretextual chapters (similar to \chapter*, but with special behavior)
+\newcommand\pretextualChapter {
+    \if@openright\cleardoublepage\else\clearpage\fi
+    \thispagestyle{\chapterTitlePageStyle}
+    \global\@topnum\z@
+    \@afterindentfalse
+    \@schapter
+}
+
+% Reset subcounters (e.g., sections, subsections) when starting a new chapter
+\newcommand{\resetSubCounters}[1]{
+    \begingroup
+    \let\@elt\@stpelt
+    \csname cl@#1\endcsname
+    \endgroup
+}
+
+% Remove the next chapter or section from the Table of Contents
+\newboolean{nextOutOfTOC}
+\setboolean{nextOutOfTOC}{false}
+
+% Command to mark the next chapter/section as out of the TOC, with optional mark
+\newcommand{\nextMark}{}
+\newcommand{\nextOutOfTOC}[1][] {
+    \setboolean{nextOutOfTOC}{true}
+    \renewcommand{\nextMark}{#1}
+}
+
+% Modify how \addcontentsline behaves for chapters/sections not in TOC
+\let\oldAddContentsLine\addcontentsline\relax
+\newcommand{\customAddContentsLine}[3] {
+    \ifthenelse{\boolean{nextOutOfTOC}}
+    {\setboolean{nextOutOfTOC}{false}}
+    {\ifthenelse{\boolean{hyperrefLoaded}}
+    {\addtocontents{#1}{\protect\contentsline{#2}{#3}{\thepage}{#2.\csname the#2\endcsname}}}
+    {\oldAddContentsLine{#1}{#2}{#3}}
+  }
+}
+
+% Custom chapter marking (for headers)
+\newcommand{\customChapterMark}[1] {
+    \ifthenelse{\boolean{nextOutOfTOC}}
+    {\markboth{\nextMark}{\nextMark}}
+    {\chaptermark{#1}}
+}
+
+% Custom section marking (for headers)
+\newcommand{\customSectionMark}[1] {
+    \ifthenelse{\boolean{nextOutOfTOC}}
+    {\markright{\nextMark}}
+    {\sectionmark{#1}}
+}
+
+% Redefine \@chapter to manage TOC entry and chapter marking
+\def\@chapter[#1]#2 {
+    \customChapterMark{#1} % This command must precede addcontentsline
+    \ifnum \c@secnumdepth >\m@ne
+        \refstepcounter{chapter}
+        \typeout{\@chapapp\space\thechapter.}
+        \ifthenelse{\boolean{afterTOC}}
+        {
+            \customAddContentsLine{toc}{chapter}
+            {\protect\numberline{\thechapter}#1}
+        }{}
+    \else
+        \ifthenelse{\boolean{afterTOC}}
+        {
+            \customAddContentsLine{toc}{chapter}{#1}
+        }{}
+    \fi
+    \if@twocolumn\@topnewpage[\@makechapterhead{#2}]
+    \else
+        \@makechapterhead{#2}\@afterheading
+    \fi\par
+}
+
+% Redefine \@schapter to behave similarly to \@chapter
+\def\@schapter#1 {
+    \if@twocolumn
+        \@topnewpage[\@makeschapterhead{#1}]
+    \else
+        \@makeschapterhead{#1}
+        \@afterheading
+    \fi
+    \@mkboth{#1}{#1}
+    \ifthenelse{\boolean{includeInTOC}}{
+        \ifthenelse{\boolean{afterTOC}}{
+            \customAddContentsLine{toc}{chapter}{#1}
+        }{}
+    }
+    {}
+    \resetSubCounters{chapter}\par
+}
+
+% Redefine \part to manage part numbering, TOC inclusion, and title formatting
+\def\@part[#1]#2{
+    \ifnum \c@secnumdepth >-2\relax
+        \refstepcounter{part}
+        \customAddContentsLine{toc}{part}{\protect\numberline{\thepart}#1}
+    \else
+        \resetSubCounters{part}
+        \customAddContentsLine{toc}{part}{#1}
+    \fi
+    \markboth{}{}{
+        \centering
+        \interlinepenalty \@M
+        \normalfont
+        \ifnum \c@secnumdepth >-2\relax
+            \partTitleFont\partTitleSize
+            \ifthenelse{\boolean{uppercasePartTitles}}{
+                \MakeUppercase{\partname~\thepart}
+            }
+            {\partname~\thepart}
+            \par
+            \vskip 20\p@
+        \fi
+        \partTitleFont\partSubtitleSize
+        \ifthenelse{\boolean{uppercasePartTitles}}
+        {\MakeUppercase{#2}}
+        {#2}\par
+    }
+    \@endpart
+}
+
+% Redefine \part* for starred parts without numbering
+\def\@spart#1{
+    \customAddContentsLine{toc}{part}{#1} % Include part in TOC
+    \markboth{}{}
+    {\centering
+        \interlinepenalty \@M
+        \normalfont
+        \partTitleFont\partSubtitleSize
+        \ifthenelse{\boolean{uppercasePartTitles}}
+        {\MakeUppercase{#1}}
+        {#1}\par}
+    \@endpart
+}
+
+% Custom start of sections, handling TOC inclusion and title formatting
+\def\customStartSection#1#2#3#4#5#6{
+    \if@noskipsec \leavevmode \fi
+    \par
+    \@tempskipa #4\relax
+    \@afterindenttrue
+    \ifdim \@tempskipa < \z@
+        \@tempskipa - \@tempskipa \@afterindentfalse
+    \fi
+    \if@nobreak
+        \everypar{}
+    \else
+        \addpenalty\@secpenalty\addvspace\@tempskipa
+    \fi
+    \@ifstar
+    {\customStartStarSection{#1}{#4}{#5}{#6}}
+    {\@dblarg{\customStartSectionWithNumber{#1}{#2}{#3}{#4}{#5}{#6}}}
+}
+
+% Starred section formatting, with optional inclusion in TOC
+\def\customStartStarSection#1#2#3#4#5{
+    \@tempskipa #3\relax
+    \ifdim \@tempskipa>\z@
+        \begingroup #4 {
+            \interlinepenalty \@M \centering
+            \ifthenelse{\boolean{uppercaseSectionTitles}}
+            {\MakeUppercase{#5}}{#5}\@@par
+        }
+        \endgroup
+        \@ifundefined{custom#1mark}{}{\csname custom#1mark\endcsname{#5}}
+        \ifthenelse{\boolean{includeInTOC}}
+        {\customAddContentsLine{toc}{#1}{#5}}
+        {}
+    \else
+        \def\@svsechd{#4{#5}
+            \@ifundefined{custom#1mark}{}{\csname custom#1mark\endcsname{#5}}
+            \ifthenelse{\boolean{includeInTOC}}
+            {\customAddContentsLine{toc}{#1}{#5}}{}
+        }
+    \fi
+    \@xsect{#3}
+}
+
+% Numbered section formatting, with TOC inclusion and number formatting
+\def\customStartSectionWithNumber#1#2#3#4#5#6[#7]#8 {
+    \ifnum #2 > \c@secnumdepth
+        \let\@svsec\@empty
+    \else
+        \refstepcounter{#1}
+        \protected@edef\@svsec{\@seccntformat{#1}\relax}
+    \fi
+    \@tempskipa #5 \relax
+    \ifdim \@tempskipa > \z@
+        \begingroup #6 {
+            \@hangfrom{\hskip #3\relax\@svsec}
+            \interlinepenalty \@M
+            \ifthenelse{\boolean{uppercaseSectionTitles}}
+            {\MakeUppercase{#8}}{#8}\@@par
+        }
+        \endgroup
+        \@ifundefined{custom#1mark}{}{\csname custom#1mark\endcsname{#7}}
+        \customAddContentsLine{toc}{#1}{
+            \ifnum #2 > \c@secnumdepth
+            \else
+                \protect\numberline{\csname the#1\endcsname}
+            \fi
+            #7
+        }
+    \else
+        \def\@svsechd {
+            #6 {
+                    \hskip #3 \relax
+                    \@svsec \ifthenelse{\boolean{uppercaseSectionTitles}}
+                    {\MakeUppercase{#8}}{#8}
+                }
+            \@ifundefined{custom#1mark}{}{\csname custom#1mark\endcsname{#7}}
+            \customAddContentsLine{toc}{#1}{
+                \ifnum #2 > \c@secnumdepth
+                \else
+                    \protect\numberline{\csname the#1\endcsname}
+                \fi
+                #7
+            }
+        }
+    \fi
+    \@xsect{#5}
+}
+
+% Custom page number style in TOC as required by NBR 6027
+\let\old@dottedtocline\@dottedtocline
+\renewcommand{\@dottedtocline}[5]{
+    \ifthenelse{\boolean{TOCPageNumStyle}}{
+        {
+                \renewcommand{\@pnumwidth}{2.5em}
+                \renewcommand{\@tocrmarg}{3.5em}
+                \old@dottedtocline{#1}{#2}{#3}{#4}
+                {\ifthenelse{\equal{#5}{}}{}{p.\thinspace#5}}
+            }
+    }
+    {\old@dottedtocline{#1}{#2}{#3}{#4}{#5}}
+}
+
+% Define the font for chapter titles
+\ifthenelse{\boolean{uppercasePartTitles}}
+{\newcommand{\chapterTitleFont}{\bfseries\upshape}}
+{\newcommand{\chapterTitleFont}{\bfseries\itshape}}
+
+% Font for chapter titles in TOC
+\newcommand{\TOCChapterFont}{\chapterTitleFont\upshape}
+
+% Define the font for section titles
+\newcommand{\sectionTitleFont}{\bfseries}
+
+% Define sizes for chapter and part
+\newcommand{\chapterSize}{\normalsize}
+\newcommand{\uppercaseChapterSize}{\normalsize}
+\newcommand{\titleSize}{\Large}
+
+% Defines how regular chapters (\chapter) are typeset
+\def\@makechapterhead#1{
+    {
+            \normalfont\chapterSize\chapterTitleFont
+            \setSpacing{single} % Single line spacing for chapter titles
+            \vspace*{\spaceHeaderChapter} % Space above the chapter title
+            \noindent
+            \parbox[b]{\textwidth}{
+                \parbox[t]{4ex}{\thechapter} % Space between the chapter number and title
+                \parbox[t]{\textwidth-4ex-1ex}{
+                    \interlinepenalty\@M\raggedright
+                    \ifthenelse{\boolean{uppercasePartTitles}}
+                    {\MakeUppercase{#1}}
+                    {#1}
+                }
+                \vspace*{\spaceAfterChapter} % Space below the chapter title
+            }\\[0pt]\vspace{\offsetAfterChapter} % Offset for additional space
+        }
+}
+
+% Flag for alternate chapter title formatting
+\newif\ifotherhead
+\otherheadfalse
+
+% Defines how starred chapters (\chapter*) are typeset
+\def\@makeschapterhead#1{
+    \ifotherhead
+        % Alternate format for starred chapter titles
+        \vspace*{-1.2cm}\par {
+            \centering\normalfont\chapterSize\chapterTitleFont%
+            \ifthenelse{\boolean{uppercasePartTitles}}
+            {\MakeUppercase{#1}}
+            {#1}
+            \par
+        }
+        \vspace{45pt}
+        \par
+        \otherheadfalse % Reset flag
+    \else
+        \vspace*{0pt}\par {
+            \centering\normalfont\chapterSize\chapterTitleFont
+            \ifthenelse{\boolean{uppercasePartTitles}}
+            {\MakeUppercase{#1}}
+            {#1}
+            \par
+        }
+        \vspace{45pt}
+        \par
+    \fi
+}
+
+% Redefine \l@chapter to apply page number styles in the TOC
+\renewcommand\l@chapter[2]{
+    \ifnum \c@tocdepth >\m@ne
+        \addpenalty{-\@highpenalty}
+        \vskip 1.0em \@plus\p@
+        \setlength\@tempdima{1.5em}
+        \begingroup
+        \ifthenelse{\boolean{TOCPageNumStyle}}
+        {\renewcommand{\@pnumwidth}{3.5em}}{}
+        \parindent \z@ \rightskip \@pnumwidth
+        \parfillskip -\@pnumwidth
+        \leavevmode \normalsize\TOCChapterFont
+        \advance\leftskip\@tempdima
+        \hskip -\leftskip
+        #1\nobreak\hfil \nobreak
+        \ifthenelse{\boolean{TOCPageNumStyle}}
+        {\hb@xt@\@pnumwidth{\hss\ifthenelse{\not\equal{#2}{}}{{\normalfont p.\thinspace#2}}{}}\par}
+        {\hb@xt@\@pnumwidth{\hss #2}\par}
+        \penalty\@highpenalty
+        \endgroup
+    \fi
+}
+
+% Redefine \part to manage part numbering, TOC inclusion, and title formatting
+\renewcommand\part{
+    \if@openright\cleardoublepage\else\clearpage\fi
+    \thispagestyle{\chapterTitlePageStyle}
+    \if@twocolumn\onecolumn\@tempswatrue\else\@tempswafalse\fi
+    \null\vfil\secdef\@part\@spart
+}
+
+% Redefine \l@part to apply custom page number styles in the TOC
+\renewcommand\l@part[2]{
+    \ifnum \c@tocdepth  > -2 \relax
+        \addpenalty{-\@highpenalty}
+        \addvspace{2.25em \@plus\p@}
+        \begingroup
+        \parindent \z@ \rightskip \@pnumwidth
+        \parfillskip -\@pnumwidth
+        \noindent{
+            \leavevmode
+            \TOCChapterFont\large\noindent%
+            #1\hfil \hb@xt@\@pnumwidth{\hss #2}
+        }
+        \par
+        \nobreak
+        \global\@nobreaktrue
+        \everypar{\global\@nobreakfalse\everypar{}}
+        \endgroup
+    \fi
+}
+
+% Redefine \section to apply custom styles and TOC inclusion
+\renewcommand\section{
+    \customStartSection{section}{1}{\z@}
+    {-3.5ex \@plus -1ex \@minus -.2ex}
+    {2.3ex \@plus.2ex}
+    {\setSpacing{single}\normalfont\sectionTitleFont\normalsize}
+}
+
+% Redefine \subsection with custom styles
+\renewcommand\subsection{
+    \customStartSection{subsection}{2}{\z@}
+    {-3.25ex \@plus -1ex \@minus -.2ex}
+    {1.5ex \@plus .2ex}
+    {\setSpacing{single}\normalfont\sectionTitleFont\normalsize}
+}
+
+% Redefine \subsubsection with custom styles
+\renewcommand\subsubsection{
+    \customStartSection{subsubsection}{3}{\z@}
+    {-3.25ex \@plus -1ex \@minus -.2ex}
+    {1.5ex \@plus .2ex}
+    {\setSpacing{single}\normalfont\sectionTitleFont\normalsize}
+}
+
+% Redefine \paragraph with custom styles
+\renewcommand\paragraph{
+    \customStartSection{paragraph}{4}{\z@}
+    {3.25ex \@plus1ex \@minus.2ex}
+    {-1em}
+    {\setSpacing{single}\normalfont\sectionTitleFont\normalsize}
+}
+
+% Redefine \subparagraph with custom styles
+\renewcommand\subparagraph{
+    \customStartSection{subparagraph}{5}{\parindent}
+    {3.25ex \@plus1ex \@minus .2ex}
+    {-1em}
+    {\setSpacing{single}\normalfont\sectionTitleFont\normalsize}
+}

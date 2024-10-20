@@ -1,0 +1,69 @@
+% -----------------------------------------------------------------------------
+% index.tex
+%
+% This file defines the environment for the document's index.
+% It supports automatic inclusion in the Table of Contents (TOC),
+% handles balanced or unbalanced columns, and removes capital page marks.
+% -----------------------------------------------------------------------------
+
+% Boolean flag for determining if the index should be balanced across columns
+\newboolean{balancedIndex}
+\setboolean{balancedIndex}{true}
+
+% Command to disable balanced index columns
+\newcommand*\UnbalancedIndex{\setboolean{balancedIndex}{false}}
+
+% -----------------------------------------------------------------------------
+% Custom index Environment
+% -----------------------------------------------------------------------------
+% A custom version of the `index` environment:
+% - No capital page marks
+% - Automatically included in the Table of Contents
+% - Supports balanced and unbalanced columns for the index
+\renewenvironment{index}
+{
+    % Check if the document is in two-column mode, and temporarily switch to one-column
+    \ifthenelse{\boolean{@twocolumn}}
+    {\setboolean{restoreTwoColumnMode}{true}\onecolumn}
+    {\setboolean{restoreTwoColumnMode}{false}}
+
+    % Clear the page if needed based on the `openright` option
+    \if@openright\cleardoublepage\else\clearpage\fi%
+
+    % Set the page style for the index
+    \thispagestyle{\chapterTitlePageStyle}
+    \global\@topnum\z@ % Prevents figures from appearing at the top of the index page
+    \@afterindentfalse % No indentation after headings
+    \@mkboth{\indexname}{\indexname} % Set up running headers for the index
+
+    % Add the index to the Table of Contents if `includeInTOC` is true
+    \ifthenelse{\boolean{includeInTOC}}
+    {\customAddcontentsLine{toc}{chapter}{\indexname}}
+    {}
+
+    % Create the chapter title for the index
+    \@makeschapterhead{\indexname}
+    \@afterheading % Formatting adjustments after the heading
+
+    % Begin the index, setting up column widths and other layout parameters
+    \begingroup
+    \setlength{\columnsep}{35pt} % Space between columns
+    \setlength{\columnseprule}{0pt} % No separator rule between columns
+    \ifthenelse{\boolean{balancedIndex}}
+    {\begin{multicols}{2}} % Start balanced two-column layout
+    {\begin{multicols*}{2}} % Start unbalanced two-column layout
+            \setSpacing{single} % Use single line spacing
+            \setlength{\parindent}{0cm} % No paragraph indentation
+            \setlength{\parskip}{.3pt} % Small space between paragraphs
+            \let\item\@idxitem % Define how index items are displayed
+            }
+            {
+            % End the index environment, closing the multicolumn environment
+            \ifthenelse{\boolean{balancedIndex}}
+            {\end{multicols}} % End balanced two-column layout
+            {\end{multicols*}} % End unbalanced two-column layout
+    \endgroup % End the group for the index layout settings
+
+    % Restore two-column mode if it was originally enabled
+    \ifthenelse{\boolean{restoreTwoColumnMode}}{\twocolumn}{}
+}

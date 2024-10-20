@@ -1,0 +1,160 @@
+\documentclass[a4paper,upppercaseChapter,doubleSpacing,normalTOC]{academix/academix}
+
+% -------------------------------------------------------------------
+% MATHEMATICS SUPPORT
+% -------------------------------------------------------------------
+
+% Math support for advanced typesetting (equations, theorems, symbols):
+% - amsmath: Advanced math typesetting
+% - amsfonts: Extra math fonts
+% - amssymb: Additional math symbols
+% - amsthm: Theorem-like environments (theorems, lemmas, etc.)
+\usepackage{amsmath,amsfonts,amssymb,amsthm}
+
+% Use Times-like font (newtxtext and newtxmath) for both text and math symbols
+\usepackage{newtxtext, newtxmath}
+
+% -------------------------------------------------------------------
+% FONT AND ENCODING SETTINGS
+% -------------------------------------------------------------------
+
+% Set font encoding to T1 for proper handling of special characters (accents, etc.)
+\usepackage[T1]{fontenc}
+
+% Set Helvetica as the default sans-serif font (similar to Arial)
+% - \sfdefault: Use sans-serif fonts for the entire document
+\usepackage{helvet}
+\renewcommand{\familydefault}{\sfdefault}
+
+% -------------------------------------------------------------------
+% LANGUAGE SUPPORT
+% -------------------------------------------------------------------
+
+% Language support for English (proper hyphenation and text rules)
+\usepackage[english]{babel}
+
+% -------------------------------------------------------------------
+% CITATION MANAGEMENT (ABNT Style)
+% -------------------------------------------------------------------
+
+% Citation management using ABNT (Brazilian Technical Standards):
+% - alf: Use the alphanumeric citation style (author-date format).
+% - abnt-repeated-author-omit=yes: Omit repeated authors in the bibliography, replacing them with a dash (---).
+% - abnt-title-command=yes: Enable \citeauthor and \citetitle commands for citing only the author or the title.
+% - abnt-emphasize=bf: Emphasize the author's name in bold in citations.
+\usepackage[alf,abnt-repeated-author-omit=yes,abnt-title-command=yes,abnt-emphasize=bf]{abntex2cite}
+
+% Proper formatting and line breaking for URLs
+\usepackage{url}
+
+% -------------------------------------------------------------------
+% TABLES
+% -------------------------------------------------------------------
+
+% Professional-quality tables with enhanced rules and spacing
+\usepackage{booktabs}
+
+% Support for large tables that can span multiple pages
+\usepackage{longtable}
+
+% Combines longtable with tabularx for dynamic column width adjustment in large tables
+\usepackage{ltxtable}
+
+% -------------------------------------------------------------------
+% FLOATS AND GRAPHICS
+% -------------------------------------------------------------------
+
+% Enhanced control over float objects (figures, tables):
+% - Allows precise placement of floating objects using the [H] option
+\usepackage{float}
+
+% Graphics and images support:
+% - pdftex: Use PDFLaTeX engine for image handling
+% - graphicspath: Set the directory for images to 'figures/'
+% - DeclareGraphicsExtensions: Define preferred image file formats (PDF, JPEG, PNG, JPG)
+\usepackage[pdftex]{graphicx}
+\graphicspath{{figures/}}
+\DeclareGraphicsExtensions{.pdf,.jpeg,.png,.jpg}
+
+% Insert external PDF documents into the LaTeX document
+\usepackage{pdfpages}
+
+% -------------------------------------------------------------------
+% PAGE LAYOUT AND FORMATTING
+% -------------------------------------------------------------------
+
+% Customizable headers and footers:
+% - fancyhdr: Provides flexible header/footer customization
+% - headheight: Set header height to 15pt for proper spacing
+\usepackage{fancyhdr}
+\setlength{\headheight}{15pt}
+
+% Ensures that the first paragraph after each section is indented
+\usepackage{indentfirst}
+
+% -------------------------------------------------------------------
+% MISCELLANEOUS
+% -------------------------------------------------------------------
+\lhead{\fancyplain{}{\textit{\leftmark}}}
+\chead{}
+\rhead{\fancyplain{}{\thepage}}
+\lfoot{}
+\cfoot{}
+\rfoot{}
+
+\begin{document}
+
+% Author information
+\customAuthor{William Liaw}
+
+% Title of the document
+\customTitle{Your title goes here}
+
+% Advisor information
+\advisor{Prof. Dr. advisor name}
+
+% Program information and department
+\minipageText{Electrical Engineering}
+\concentrationArea{Systems Engineering (example)}
+\departamento{Department of Control and Telecommunications Engineering (PTC)}
+
+% Location and date
+\location{Palaiseau}
+\customDate{2024}
+
+% Generate the cover and back cover pages
+\coverPage{}
+\backCover{}
+
+% Set page numbering to roman numerals for pre-textual elements
+\pagenumbering{roman}
+
+% Dedication page
+\dedication{To my family}
+\dedicationPage{}
+
+% Include other pre-textual elements (acknowledgement, abstract)
+\include{doc/acknowledgement}
+\include{doc/abstract}
+
+% List of Figures and Tables
+\listoffigures
+\listoftables
+
+\include{doc/abbreviations}
+\include{doc/symbols}
+
+\tableofcontents
+
+\pagenumbering{arabic}
+
+\include{doc/introduction}
+\include{doc/literature}
+\include{doc/methodology}
+\include{doc/results}
+\include{doc/conclusion}
+\bibliography{doc/bibliography}
+\appendix
+\include{doc/appA}
+
+\end{document}

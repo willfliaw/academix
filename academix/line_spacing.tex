@@ -1,0 +1,89 @@
+% -----------------------------------------------------------------------------
+% line_spacing.tex
+%
+% This file defines commands and environments to control line spacing
+% for the document. It includes:
+%   - Definition and handling of the `setstretch` command (from `setspace`)
+%   - Adjusting display math spacing (`setDisplaySkipStretch`)
+%   - Custom environments for single, one-and-a-half, and double spacing
+%   - Handling of missing `setspace` package with warnings
+%   - Default line spacing setting based on class options
+% -----------------------------------------------------------------------------
+
+
+\IfFileExists{setspace.sty}
+{\RequirePackage{setspace}}
+{
+
+    \AtEndDocument{\ClassWarningNoLine{document}
+        {
+            ------------------------------------------------\MessageBreak
+            Package 'setspace' needed and was not found.\MessageBreak
+            Please install it or check for errors in loading.\MessageBreak
+            You can download it from CTAN (www.ctan.org).\MessageBreak
+            For more information, refer to the class manual.\MessageBreak
+            ------------------------------------------------
+        }
+    }
+    % Fallback definition for `\setstretch` if `setspace` is not available
+    \ifthenelse{\isundefined{\@currsize}}
+    {\providecommand{\setstretch}[1]{\def\baselinestretch{#1}\normalsize}}
+    {\providecommand{\setstretch}[1]{\def\baselinestretch{#1}\@currsize}}
+}
+
+% Command to adjust extra spacing before and after display math environments.
+% This command is from `setspace`. If `setspace` is older than March 21, 1998,
+% or unavailable, provide a fallback definition.
+\providecommand{\setDisplaySkipStretch}[1]{\relax}
+
+% Default to no extra spacing around display math (equivalent to 'nodisplayskipstretch')
+\setDisplaySkipStretch{1.0}
+
+% -----------------------------------------------------------------------------
+% Custom Spacing Command
+% -----------------------------------------------------------------------------
+% \setSpacing{} - Activates the given line spacing stretch. Accepts:
+%   - "single" for single spacing
+%   - "onehalf" for one-and-a-half spacing
+%   - "double" for double spacing
+%   - A custom numeric value for specific line spacing
+\newcommand{\setSpacing}[1]{
+    \ifthenelse{\equal{#1}{single}}{\setstretch{\singleSpacingRate}}
+    {
+        \ifthenelse{\equal{#1}{oneHalf}}{\setstretch{\oneHalfSpacing}}
+        {
+            \ifthenelse{\equal{#1}{double}}{\setstretch{\doubleSpacing}}
+            {\setstretch{#1}} % Otherwise, use the custom spacing value
+        }
+    }
+}
+
+% -----------------------------------------------------------------------------
+% Environments for Specific Spacing
+% -----------------------------------------------------------------------------
+% These environments provide quick methods for setting specific line spacing.
+
+% Environment for single spacing
+\newenvironment{singleSpacing}
+{\begin{spacing}{\singleSpacingRate}}{\end{spacing}}
+
+% Environment for one-and-a-half spacing
+\newenvironment{oneHalfSpacing}
+{\begin{spacing}{\oneHalfSpacingRate}}{\end{spacing}}
+
+% Environment for double spacing
+\newenvironment{doubleSpacing}
+{\begin{spacing}{\doubleSpacingRate}}{\end{spacing}}
+
+% -----------------------------------------------------------------------------
+% Default Document Settings and Hyperref Package Detection
+% -----------------------------------------------------------------------------
+
+% Boolean to detect if `hyperref` is loaded (for handling hyperlinks in the TOC)
+\newboolean{hyperrefLoaded}
+
+% Set default line spacing based on class options and check if `hyperref` is loaded.
+\AtBeginDocument{
+    \setSpacing{\LineSpacingDefault}
+    \@ifpackageloaded{hyperref}{\setboolean{hyperrefLoaded}{true}}{\setboolean{hyperrefLoaded}{false}}
+}

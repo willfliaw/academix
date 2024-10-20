@@ -1,0 +1,164 @@
+% -----------------------------------------------------------------------------
+% page_style.tex
+%
+% This file defines the following:
+%   - Font styles for header elements (rightmark, leftmark, page number)
+%   - Custom page styles:
+%       * "header" (with chapter and section marks)
+%       * "plainheader" (plain header with page number)
+%       * "ruledheader" (with underlined header)
+%   - Indentation settings for the first paragraph of each section
+%   - Sets the style for chapter titles
+% -----------------------------------------------------------------------------
+
+% ----------------------------------------------------------------------
+% Font Styles for Header Elements
+% ----------------------------------------------------------------------
+
+\newcommand{\rightMarkFormat}{\small\itshape}   % Style for right header mark
+\newcommand{\leftMarkFormat}{\itshape}          % Style for left header mark
+\newcommand{\thePageFormat}{\small}             % Style for page number
+
+% Custom commands for setting chapter and section marks in headers
+\newcommand{\customMarkBoth}[2]{
+    \ifthenelse{\boolean{nextOutOfTOC}}
+    {\markboth{\nextMark}{\nextMark}}
+    {\markboth{#1}{#2}}
+}
+
+\newcommand{\custommarkright}[1]{
+    \ifthenelse{\boolean{nextOutOfTOC}}
+    {\markright{\nextMark}}
+    {\markright{#1}}
+}
+
+% ----------------------------------------------------------------------
+% Page Style: "header"
+% ----------------------------------------------------------------------
+% Defines a custom page style with headers for both odd and even pages
+
+\newcommand{\ps@header}{
+    \renewcommand{\@oddfoot}{} % No footer on odd pages
+    \renewcommand{\@evenfoot}{} % No footer on even pages
+    \renewcommand{\@oddhead}{{\rightMarkFormat\rightmark}\hfill{\thePageFormat\thepage}} % Right header for odd pages
+    \renewcommand{\@evenhead}{{\theMageFormat\thepage}\hfill{\leftmarkformat\leftmark}} % Left header for even pages
+
+    % Ensure \chapter* shows the header
+    \let\@mkboth\customMarkBoth
+
+    % Define how \chapter marks the header
+    \renewcommand{\chaptermark}[1]{
+        \markboth{
+            \ifnum \c@secnumdepth > \m@ne
+                \thechapter{}
+            \fi ##1
+        }{
+            \ifnum \c@secnumdepth > \m@ne
+                \thechapter{}
+            \fi ##1
+        }
+    }
+
+    % Define how \section marks the header
+    \renewcommand{\sectionmark}[1]{%
+        \markright{
+            \ifnum \c@secnumdepth > \z@
+                \thesection\ \ %
+            \fi ##1
+        }
+    }
+}
+
+% ----------------------------------------------------------------------
+% Page Style: "plainheader"
+% ----------------------------------------------------------------------
+% A simpler page style with just the page number in the header
+
+\newcommand{\ps@plainheader}{
+    \renewcommand{\@oddfoot}{} % No footer on odd pages
+    \renewcommand{\@evenfoot}{} % No footer on even pages
+    \renewcommand{\@oddhead}{\hfill{\thePageFormat\thepage}}% Page number on the right for odd pages
+    \renewcommand{\@evenhead}{{\thePageFormat\thepage}\hfill}% Page number on the left for even pages
+
+    % Ensure \chapter* shows the header
+    \let\@mkboth\customMarkBoth
+
+    % Define how \chapter marks the header
+    \renewcommand{\chaptermark}[1]{
+        \markboth{
+            \ifnum \c@secnumdepth > \m@ne
+                \thechapter\ \ %
+            \fi ##1
+        }{
+            \ifnum \c@secnumdepth > \m@ne
+                \thechapter\ \ %
+            \fi ##1
+        }
+    }
+
+    % Define how \section marks the header
+    \renewcommand{\sectionmark}[1]{
+        \markright{
+            \ifnum \c@secnumdepth > \z@
+                \thesection\ \ %
+            \fi ##1
+        }
+    }
+}
+
+% ----------------------------------------------------------------------
+% Page Style: "ruledheader"
+% ----------------------------------------------------------------------
+% A page style with underlined headers for both odd and even pages
+
+\newcommand{\ps@ruledheader}{
+    \renewcommand{\@oddfoot}{} % No footer on odd pages
+    \renewcommand{\@evenfoot}{} % No footer on even pages
+    \renewcommand{\@oddhead}{
+        \underline{\makebox[\textwidth]{\raisebox{-.5ex}{}{\rightmarkformat\rightmark}\hfill{\thePageFormat\thepage}}}
+    }
+    \renewcommand{
+        \@evenhead}{\underline{\makebox[\textwidth]{\raisebox{-.5ex}{}{\thePageFormat\thepage}\hfill{\leftmarkformat\leftmark}}}
+    }
+
+    % Ensure \chapter* shows the header
+    \let\@mkboth\customMarkBoth
+
+    % Define how \chapter marks the header
+    \renewcommand{\chaptermark}[1]{
+        \markboth{
+            \ifnum \c@secnumdepth > \m@ne
+                \thechapter\ \ %
+            \fi ##1
+        }{
+            \ifnum \c@secnumdepth > \m@ne
+                \thechapter\ \ %
+            \fi ##1
+        }
+    }
+
+    % Define how \section marks the header
+    \renewcommand{\sectionmark}[1]{
+        \markright{
+            \ifnum \c@secnumdepth > \z@
+                \thesection\ \ %
+            \fi ##1%
+        }
+    }
+}
+
+% ----------------------------------------------------------------------
+% Indenting First Paragraph of Each Section
+% ----------------------------------------------------------------------
+
+% Conditionally load the indentfirst package if the first paragraph should be indented
+\ifthenelse{\boolean{indentFirstParagraph}}
+{\RequirePackage{indentfirst}}
+{}
+
+% Set the paragraph indentation size and spacing between paragraphs
+\setlength{\parindent}{\indentationSize}
+\setlength{\parskip}{\indentationSkip}
+
+% Set the default page style for chapter titles
+\newcommand{\chapterTitlePageStyle}{plain}

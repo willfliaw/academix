@@ -1,0 +1,179 @@
+% -----------------------------------------------------------------------------
+% pre_text.tex
+%
+% This file defines the pre-textual elements for the cover and back cover.
+% It includes definitions for:
+%   - Institution, author, advisor, co-advisor, title, and comments
+%   - Formatting for fields such as concentration area, location, date, and dedication
+%   - Functions to conditionally include fields only if they are non-empty
+%   - Commands for generating the cover and back cover pages
+% -----------------------------------------------------------------------------
+
+% Formatting commands for various elements
+\newcommand{\fcformat}{\textsf} % General font format for cover
+
+% ----------------------------------------------------------------------
+% Data fields for institution, author, advisor, co-advisor, etc.
+% ----------------------------------------------------------------------
+
+% Institution
+\providecommand{\institutionData}{}
+\newcommand{\institution}[1]{\renewcommand{\institutionData}{#1}}
+\newcommand{\institutionFormat}{\scshape}
+
+% Author
+\providecommand{\authorData}{}
+\newcommand{\customAuthor}[1]{\renewcommand{\authorData}{#1}}
+\newcommand{\authorFormat}{\sectionTitleFont}
+
+% Advisor
+\providecommand{\advisorData}{}
+\providecommand{\advisorName}{}
+\newcommand{\advisor}[2][\advisorTitle:\vspace{1mm}\\]{%
+    \renewcommand{\advisorName}{#1}%
+    \renewcommand{\advisorData}{#2}%
+}
+\newcommand{\advisorNameFormat}{}
+\newcommand{\advisorFormat}{}
+
+% Co-advisor
+\providecommand{\coAdvisorData}{}
+\providecommand{\coAdvisorName}{}
+\newcommand{\coAdvisor}[2][\coAdvisorTitle:\vspace{1mm}\\]{%
+    \renewcommand{\coAdvisorName}{#1}%
+    \renewcommand{\coAdvisorData}{#2}%
+}
+\newcommand{\coAdvisorNameFormat}{}
+\newcommand{\coAdvisorFormat}{}
+
+% Title
+\providecommand{\titleData}{}
+\providecommand{\uppercaseTitleData}{}
+\newcommand{\customTitle}[1]{%
+    \renewcommand{\titleData}{#1}%
+    \renewcommand{\uppercaseTitleData}{\uppercase{#1}}%
+}
+\newcommand{\titleFormat}{\titleSize\chapterTitleFont}
+
+% Comments
+\providecommand{\commentData}{}
+\newcommand{\comment}[1]{\renewcommand{\commentData}{#1}}
+\newcommand{\commentFormat}{}
+
+% Concentration Area
+\providecommand{\concentrationAreaData}{}
+\providecommand{\concentrationAreaName}{}
+\newcommand{\concentrationArea}[2][\concentrationField:\vspace{1mm}\\]{%
+    \renewcommand{\concentrationAreaName}{#1}%
+    \renewcommand{\concentrationAreaData}{#2}%
+}
+\newcommand{\concentrationAreaNameFormat}{}
+\newcommand{\concentrationAreaFormat}{}
+
+% Location
+\providecommand{\locationData}{}
+\newcommand{\location}[1]{\renewcommand{\locationData}{#1}}
+\newcommand{\locationFormat}{}
+
+% Date
+\providecommand{\dateData}{}
+\newcommand{\customDate}[1]{\renewcommand{\dateData}{#1}}
+\newcommand{\dateFormat}{}
+
+% Dedication
+\providecommand{\dedicationData}{}
+\newcommand{\dedication}[1]{\renewcommand{\dedicationData}{#1}}
+\newcommand{\dedicationFormat}{}
+
+% ----------------------------------------------------------------------
+% Conditional display of elements (only if non-empty)
+% ----------------------------------------------------------------------
+
+\newcommand{\ifNotEmpty}[2]{\ifthenelse{\not\equal{#1}{}}{#2}{}}
+
+% ----------------------------------------------------------------------
+% Cover Page Command
+% ----------------------------------------------------------------------
+
+\newcommand{\coverPage}{
+    \vspace*{-\authorMargin}
+    \begin{center}
+        \setSpacing{\oneHalfSpacingRate}
+        {\authorFormat \authorData} \\[\authorToTitle] % Author name
+        {\titleFormat \titleData}
+
+        % Minipage for comments
+        \vspace{\minipageTopMargin}
+        \hspace{\minipagePosition\textwidth}
+        \begin{minipage}{\minipageWidth\textwidth}
+            \begin{oneHalfSpacing}
+                \begin{sloppypar}
+                    {
+                        \commentFormat
+                        \commentData\\[\minipageParagraphSpacingB]
+                    }
+                \end{sloppypar}
+            \end{oneHalfSpacing}
+        \end{minipage}
+
+        % Display location and date
+        \vspace*{\minipageBottomMargin}
+        \begin{singleSpacing} % Single line spacing
+            {\locationFormat\locationData}\\
+            {\dateFormat\dateData}
+        \end{singleSpacing}
+        \if@openright\cleardoublepage\else\clearpage\fi
+    \end{center}
+}
+
+% ----------------------------------------------------------------------
+% Back Cover Command
+% ----------------------------------------------------------------------
+
+\newcommand{\backCover}{
+    \vspace*{-\authorMargin}
+    \begin{center}
+        \setSpacing{\oneHalfSpacingRate}
+        {\authorFormat \authorData} \\[\authorToTitle]
+        {\titleFormat \titleData}
+
+        % Minipage for comments, concentration area, and advisors
+        \vspace{\minipageTopMargin}
+        \hspace{\minipagePosition\textwidth}
+        \begin{minipage}{\minipageWidth\textwidth}
+            \begin{oneHalfSpacing}
+                \begin{sloppypar}
+                    {
+                        \commentFormat
+                        \commentData\\[\minipageParagraphSpacingB] % Comments and date positioning
+                    }
+                \end{sloppypar}
+
+                % Conditional display for concentration area, advisors, and co-advisors
+                \ifNotEmpty{\concentrationAreaData}{
+                    {\concentrationAreaNameFormat\concentrationAreaName}
+                    {\concentrationAreaFormat\concentrationAreaData}
+                    \par
+                }
+                \ifNotEmpty{\advisorData}{
+                    \vspace{\minipageParagraphSpacingA}
+                    {\advisorNameFormat\advisorName}
+                    {\advisorFormat\advisorData}\protect\\
+                }
+                \ifNotEmpty{\coAdvisorData}{
+                    \vspace{\minipageParagraphSpacingA}
+                    {\coAdvisorNameFormat\coAdvisorName}
+                    {\coAdvisorFormat\coAdvisorData}
+                }
+            \end{oneHalfSpacing}
+        \end{minipage}
+
+        % Display location and date
+        \vspace*{\dateBackCoverOffset}
+        \begin{singleSpacing} % Single line spacing
+            {\locationFormat\locationData}\\
+            {\dateFormat\dateData}
+        \end{singleSpacing}
+        \clearpage
+    \end{center}
+}

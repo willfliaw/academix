@@ -1,0 +1,214 @@
+% -----------------------------------------------------------------------------
+% class_options.tex
+%
+% This file defines various options for the class, including:
+%   - page numbering schemes (IEEE-style, plain, Roman-Arabic mix)
+%   - inclusion of bibliography, index, and starred chapters in the TOC
+%   - style of page numbers in the Table of Contents
+%   - independent numbering for figures and tables (independent of sections)
+%   - page header options (normal, plain, ruled, or no header)
+%   - capitalization options for chapter and section titles
+%   - annex and appendix title formatting (capitalization, indentation)
+%   - line spacing options (single, one and a half, double)
+%   - auto bold math (bold math when text font is bold)
+%   - font options (Times font as default or not)
+%   - indenting the first paragraph of each section or chapter
+%   - draft mode support (for visual debugging)
+%   - passing undefined options to the base class (report)
+%   - handling custom font sizes and paper size options
+%   - processing options in the defined order
+%   - loading the base class (report) using the defined settings
+%   - customizing figure and table counters
+% -----------------------------------------------------------------------------
+
+
+% -------------------------------------------------------------------
+% CONDITIONALS, CALCULATIONS, AND MULTICOLUMN SUPPORT
+% -------------------------------------------------------------------
+
+% ifthen: Provides conditionals for use in LaTeX (if-else structures)
+% Allows conditional logic (e.g., \ifthenelse) to create dynamic content based on conditions.
+\RequirePackage{ifthen}
+
+% calc: Enables arithmetic operations with lengths and counters
+% Simplifies complex calculations involving lengths and counters in LaTeX (e.g., for layout adjustments).
+\RequirePackage{calc}
+
+% multicol: Support for flexible multi-column text layout
+% Enables splitting text into multiple columns with balanced content, useful for newspapers, newsletters, etc.
+\RequirePackage{multicol}
+
+% -------------------------------------------------------------------
+% OPTION DECLARATIONS
+% -------------------------------------------------------------------
+
+% Page numbering scheme
+% ---------------------
+\providecommand{\pageNumberingScheme}{}
+\DeclareOption{pageNumberingABNT}      {\renewcommand{\pageNumberingScheme}{ABNT}}
+\DeclareOption{pageNumberingPlain}     {\renewcommand{\pageNumberingScheme}{plain}}
+\DeclareOption{pageNumberingRomArab}   {\renewcommand{\pageNumberingScheme}{RomSumArab}}
+\ExecuteOptions{pageNumberingABNT}
+
+% Include special sections (Bibliography, Index) in TOC or not
+% ------------------------------------------------------------
+\newboolean{includeInTOC}
+\DeclareOption{completeIndex}   {\setboolean{includeInTOC}{true}}
+\DeclareOption{partialIndex}    {\setboolean{includeInTOC}{false}}
+\ExecuteOptions{completeIndex}
+
+% Style of page numbers in the Table of Contents
+% ----------------------------------------------
+\newboolean{TOCPageNumStyle}
+\DeclareOption{styledTOC}   {\setboolean{TOCPageNumStyle}{true}}
+\DeclareOption{normalTOC}   {\setboolean{TOCPageNumStyle}{false}}
+\ExecuteOptions{styledTOC}
+
+% Figures and tables numbering independent of sections?
+% -----------------------------------------------------
+\newboolean{figTabNumIndependent}
+\DeclareOption{independentFigTabNum}   {\setboolean{figTabNumIndependent}{true}}
+\DeclareOption{normalFigTabNum}        {\setboolean{figTabNumIndependent}{false}}
+\ExecuteOptions{independentFigTabNum}
+
+% Page header options
+% -------------------
+\newboolean{usePageHeader}
+\providecommand{\PageHeaderType}{\relax}
+\DeclareOption{noheader}      {\setboolean{usePageHeader}{false}}
+\DeclareOption{header}        {\setboolean{usePageHeader}{true}\renewcommand{\PageHeaderType}{normal}}
+\DeclareOption{plainheader}   {\setboolean{usePageHeader}{true}\renewcommand{\PageHeaderType}{plain}}
+\DeclareOption{ruledheader}   {\setboolean{usePageHeader}{true}\renewcommand{\PageHeaderType}{ruled}}
+\ExecuteOptions{plainheader}
+
+% Use capital letters for chapter or section titles
+% -------------------------------------------------
+\newboolean{uppercasePartTitles}
+\setboolean{uppercasePartTitles}{false}
+\newboolean{uppercaseSectionTitles}
+\setboolean{uppercaseSectionTitles}{false}
+
+\DeclareOption{upppercaseChapter}   {\setboolean{uppercasePartTitles}{true}}
+\DeclareOption{upppercaseSection}   {\setboolean{uppercaseSectionTitles}{true}}
+
+% Control case style for annex and appendix titles
+% ------------------------------------------------
+\newboolean{uppercaseAnApTitles}
+\setboolean{uppercaseAnApTitles}{true}
+
+\DeclareOption{uppercaseAnAp}   {\setboolean{uppercaseAnApTitles}{true}}
+\DeclareOption{normalAnAp}      {\setboolean{uppercaseAnApTitles}{false}}
+
+% Strict indentation for annex and appendix titles
+% ------------------------------------------------
+\newboolean{indentAnAp}
+\DeclareOption{indentAnAp}     {\setboolean{indentAnAp}{true}}
+\DeclareOption{noIndentAnAp}   {\setboolean{indentAnAp}{false}}
+\ExecuteOptions{indentAnAp}
+
+% Use annex and appendix name
+% ---------------------------
+\newboolean{useAnApName}
+\DeclareOption{anApName}     {\setboolean{useAnApName}{true}}
+\DeclareOption{noAnApName}   {\setboolean{useAnApName}{false}}
+\ExecuteOptions{anApName}
+
+% Line spacing options
+% --------------------
+\newcommand*{\LineSpacingDefault}{} %
+\DeclareOption{singleSpacing}    {\renewcommand*{\LineSpacingDefault}{\singleSpacingRate}}
+\DeclareOption{oneHalfSpacing}   {\renewcommand*{\LineSpacingDefault}{\oneHalfSpacingRate}}
+\DeclareOption{doubleSpacing}    {\renewcommand*{\LineSpacingDefault}{\doubleSpacingRate}}
+\ExecuteOptions{doubleSpacing}
+
+% Auto-bold math: math font changes to bold if text is bold
+% ---------------------------------------------------------
+\newboolean{autoBoldMath}
+\DeclareOption{autoBoldMath}   {\setboolean{autoBoldMath}{true}}
+\DeclareOption{noAutoBoldMath} {\setboolean{autoBoldMath}{false}}
+\ExecuteOptions{autoBoldMath}
+
+% Use Times font as the document's default font or not
+% ----------------------------------------------------
+\newboolean{useTimesFont}
+\DeclareOption{times}     {\setboolean{useTimesFont}{true}}
+\DeclareOption{noTimes}   {\setboolean{useTimesFont}{false}}
+\ExecuteOptions{noTimes}
+
+% Control indentation for the first paragraph in chapters/sections
+% ----------------------------------------------------------------
+\newboolean{indentFirstParagraph}
+\DeclareOption{indentFirst}     {\setboolean{indentFirstParagraph}{true}}
+\DeclareOption{noIndentFirst}   {\setboolean{indentFirstParagraph}{false}}
+\ExecuteOptions{indentFirst}
+
+% Draft mode: Enables draft settings (e.g., highlighting overflows)
+% -----------------------------------------------------------------
+\newboolean{DraftMode}
+\DeclareOption{draft}     {\setboolean{DraftMode}{true}}
+\DeclareOption{noDraft}   {\setboolean{DraftMode}{false}}
+\ExecuteOptions{noDraft}
+
+% Store and manage all currently selected options
+% -----------------------------------------------
+\def\CurrentOptionsList{}
+\newcommand{\AddCurrentOptionToList}{
+    \ifx\CurrentOptionsList\@empty
+        \edef\CurrentOptionsList{\CurrentOption}
+    \else
+        \edef\CurrentOptionsList{\CurrentOptionsList,\CurrentOption}
+    \fi
+}
+
+% Any undefined options are passed to the base class ('report')
+% -------------------------------------------------------------
+\DeclareOption*{
+    \AddCurrentOptionToList
+    \ifthenelse{
+        \equal{\CurrentOption}{10pt}\or\equal{\CurrentOption}{11pt}
+    }{\setboolean{UseCustomFontSize}{true}}{}
+    \ifthenelse{
+        \equal{\CurrentOption}{a5paper}\or\equal{\CurrentOption}{b5paper}\or\equal{\CurrentOption}{letterpaper}
+    }{\setboolean{UseCustomPaperSize}{true}}{}
+    \ifthenelse{
+        \equal{\CurrentOption}{openany}
+    }{\setboolean{UseOpenStyle}{true}}{}
+    \PassOptionsToClass{\CurrentOption}{report}
+}
+
+% Track whether custom font sizes or paper settings are used
+% ----------------------------------------------------------
+\newboolean{useCustomFontSize}
+\setboolean{useCustomFontSize}{false}
+\newboolean{useCustomPaperSize}
+\setboolean{useCustomPaperSize}{false}
+\newboolean{useOpenStyle}
+\setboolean{useOpenStyle}{false}
+
+% Process all declared options
+\ProcessOptions
+
+% Apply default settings if no custom font size or paper options are set
+\ifthenelse{\boolean{useCustomFontSize}}{}{\PassOptionsToClass{12pt}{report}}
+\ifthenelse{\boolean{useCustomPaperSize}}{}{\PassOptionsToClass{a4paper}{report}}
+\ifthenelse{\boolean{useOpenStyle}}{}{\PassOptionsToClass{openright}{report}}
+
+\ifthenelse{\boolean{figTabNumIndependent}}{
+    \let\oldNewCounter\newcounter\relax
+    \def\eatbrackets[#1]{\relax}
+    \renewcommand{\newcounter}[1]
+    {\ifthenelse{\equal{#1}{figure}\or\equal{#1}{table}}
+        {\oldNewCounter{#1}\@ifnextchar[{\eatbrackets}{}}
+        {\oldNewCounter{#1}}
+    }
+}{}
+
+% Load the base class using the settings from processed options
+\LoadClass{report}
+
+\ifthenelse{\boolean{figTabNumIndependent}}
+{
+    \let\newcounter\oldNewCounter\relax
+    \renewcommand{\thefigure}{\arabic{figure}}
+    \renewcommand{\thetable}{\arabic{table}}
+}{}

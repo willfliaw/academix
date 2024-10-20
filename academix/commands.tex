@@ -1,0 +1,147 @@
+% -----------------------------------------------------------------------------
+% commands.tex
+%
+% This file defines custom commands and environments for formatting, including:
+%   - Author formatting
+%   - Dedication page
+%   - Acknowledgement environment
+%   - Abstract environments
+%   - Font selection and auto bold math
+%   - Section and subsection counter limits
+% -----------------------------------------------------------------------------
+
+% ----------------------------------------------------------------------
+% Author Formatting
+% ----------------------------------------------------------------------
+
+% Custom command to format author information for the document and cataloging
+\newcommand{\autorPoli}[5]{
+    \customAutor{\uppercase{{#1 #4 #5}}}% Full name in uppercase (First Middle Last)
+    \renewcommand{\PoliAutorFichaCatalografica}{{#5, #1 #3}}% Cataloging format
+    \renewcommand{\PoliAutorIniciaisMaisSobrenome}{{#2 #4 #5}}% Initials + Last name format
+}
+
+% Department information
+\newcommand{\PoliDepartamentoData}{}
+\newcommand{\departamento}[1]{\renewcommand{\PoliDepartamentoData}{#1}}
+\newcommand{\departamentoformat}{}
+
+% Document type information
+\newcommand{\documentType}{}
+
+% ----------------------------------------------------------------------
+% Dedication Page
+% ----------------------------------------------------------------------
+
+% Command to create a dedication page with optional content
+\newcommand{\dedicationPage}{
+    \begin{titlepage}
+        \setSpacing{1.1}
+        \vfill\vfill\vfill
+        \vspace{6cm}
+        \ifNotEmpty{\dedicationData}{
+            \hspace{.47\textwidth}
+            \begin{minipage}{.5\textwidth}
+                \begin{singleSpacing}
+                    \vspace{20cm}
+                    {\commentFormat\dedicationData}\protect\\\par
+                \end{singleSpacing}
+            \end{minipage}
+        }
+        \vspace{.8cm}
+        \vfill\vfill\vfill
+    \end{titlepage}
+}
+
+% ----------------------------------------------------------------------
+% Acknowledgement Environment
+% ----------------------------------------------------------------------
+
+% Custom environment to format the acknowledgement section
+\newenvironment{acknowledgement}{
+    \if@openright\cleardoublepage\else\clearpage\fi
+    \otherheadtrue\pretextualChapter{\acknowledgmentName}
+    \begin{oneHalfSpacing}
+        }{
+    \end{oneHalfSpacing}\newpage
+}
+
+% ----------------------------------------------------------------------
+% Abstract Environment
+% ----------------------------------------------------------------------
+
+% Redefinition of the abstract environment
+\renewenvironment{abstract}{
+    \if@openright\cleardoublepage\else\clearpage\fi
+    \otherheadtrue\pretextualChapter{\abstractName}
+    \begin{oneHalfSpacing}
+        }{
+    \end{oneHalfSpacing}\newpage
+}
+
+% ----------------------------------------------------------------------
+% Resumo Environment
+% ----------------------------------------------------------------------
+
+% Custom environment to format the summary
+\newenvironment{summary}{
+    \if@openright\cleardoublepage\else\clearpage\fi%
+    \otherheadtrue\pretextualChapter{\summaryName}
+    \begin{oneHalfSpacing}
+        }{
+    \end{oneHalfSpacing}\newpage
+}
+
+% ----------------------------------------------------------------------
+% Font Selection
+% ----------------------------------------------------------------------
+
+% Font choice: Times with Helvetica as sans serif
+\ifthenelse{\boolean{useTimesFont}}{
+    \IfFileExists{mathptmx.sty}
+    {\RequirePackage{mathptmx}}
+    {\IfFileExists{mathptm.sty}
+        {\RequirePackage{mathptm}}
+        {\IfFileExists{times.sty}
+            {\RequirePackage{times}}
+            {\renewcommand{\rmdefault}{ptm}}
+        }
+    }
+    \IfFileExists{helvet.sty}% Include Helvetica as sans-serif font
+    {\RequirePackage{helvet}}%
+    {\IfFileExists{helvetic.sty}%
+        {\RequirePackage{helvetic}}%
+        {\renewcommand{\rmdefault}{phv}}% Set default sans-serif font to Helvetica
+    }
+}
+{}
+
+% ----------------------------------------------------------------------
+% Auto Bold Math (Apply bold math in bold text environments)
+% ----------------------------------------------------------------------
+
+\AtBeginDocument{%
+    \ifthenelse{\boolean{autoBoldMath}\and\not\isundefined{\mv@bold}}% If auto bold math is enabled
+    {
+        % Redefine bold commands to also affect math mode
+        \let\ABNToldbfseries\bfseries\relax%
+        \renewcommand{\bfseries}{\mathversion{bold}\ABNToldbfseries}%
+
+        \let\ABNToldtextbf\textbf\relax%
+        \renewcommand{\textbf}[1]{\ABNToldtextbf{\mathversion{bold}#1}}%
+
+        \let\ABNToldbf\bf\relax%
+        \renewcommand{\bf}{\mathversion{bold}\ABNToldbf}%
+    }
+    {}
+}
+
+% ----------------------------------------------------------------------
+% Section and Subsection Counters
+% ----------------------------------------------------------------------
+
+% Set TOC depth to show up to subsubsection
+\setcounter{tocdepth}{4}
+
+% Set section numbering to go up to subsubsection
+\setcounter{secnumdepth}{3}

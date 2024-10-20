@@ -1,0 +1,46 @@
+% -----------------------------------------------------------------------------
+% reference.tex
+%
+% This file defines the setup for the bibliography environment
+% (\thebibliography). It controls how the bibliography section is formatted,
+% how it is included in the Table of Contents, and the overall styling.
+% -----------------------------------------------------------------------------
+
+\renewenvironment{thebibliography}[1] {
+    \if@openright\cleardoublepage\else\clearpage\fi
+    \thispagestyle{\chapterTitlePageStyle}
+    \global\@topnum\z@
+    \@afterindentfalse
+    \renewcommand{\bibname}{\referenceName}
+    \@mkboth{\bibname}{\bibname}
+    \ifthenelse{\boolean{includeInTOC}}
+    {\customAddContentsLine{toc}{chapter}{\bibname}}
+    {}
+    \if@twocolumn
+        \@topnewpage[\@makeschapterhead{\bibname}]
+    \else
+        \@makeschapterhead{\bibname}
+        \@afterheading
+    \fi
+
+    \list{\@biblabel{\@arabic\c@enumiv}}
+    {
+        \settowidth\labelwidth{\@biblabel{#1}}
+        \leftmargin\labelwidth
+        \advance\leftmargin\labelsep
+        \@openbib@code
+        \usecounter{enumiv}
+        \let\p@enumiv\@empty
+        \renewcommand\theenumiv{\@arabic\c@enumiv}
+    }
+    \sloppy
+    \setSpacing{single}
+    \clubpenalty4000
+    \@clubpenalty \clubpenalty
+    \widowpenalty4000
+    \sfcode`\.\@m
+}
+{\def\@noitemerr
+    {\@latex@warning{Empty `thebibliography' environment}}
+    \endlist
+}

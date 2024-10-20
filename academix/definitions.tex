@@ -1,0 +1,87 @@
+% -----------------------------------------------------------------------------
+% definitions.tex
+%
+% This file contains the main formatting definitions for the document class.
+% It includes the following key formatting elements:
+%   - spacing settings (line spacing, paragraph indentation, etc.)
+%   - margin sizes (top, bottom, left, right, and other custom margins)
+%   - minipage settings (positioning, width, and spacing)
+%   - cover page and back cover margin adjustments
+%   - caption and appendix formatting (spacing, margins, symbols)
+%   - chapter title and section title spacing adjustments
+%   - field titles (Acknowledgements, Abstract, Resumo, Advisor, etc.)
+%   - commands for customization of degree information and text blocks
+% -----------------------------------------------------------------------------
+
+% -----------------------------------------------------------------------------
+% FORMATTING DEFINITIONS
+% -----------------------------------------------------------------------------
+
+% Line spacing definitions (single, one-and-a-half, and double)
+\newcommand*{\singleSpacingRate}{1.0}
+\newcommand*{\oneHalfSpacingRate}{1.25}
+\newcommand*{\doubleSpacingRate}{1.5}
+
+% Paragraph indentation and skip (space before new paragraphs)
+\newcommand*{\indentationSize}{0.7cm}
+\newcommand*{\indentationSkip}{0.25cm}
+
+% Separator symbol used in figure/table captions and appendices
+\newcommand{\captionSeparator}{ - }
+\newcommand{\appendixSeparator}{ - }
+
+% Margin sizes
+\newcommand{\topMargin}{2.0cm}
+\newcommand{\bottomMargin}{2.0cm}
+\newcommand{\leftMargin}{3.0cm}
+\newcommand{\rightMargin}{2.0cm}
+
+% Distance from the top of the header to the top of the text
+\newcommand{\headerToText}{1.0cm}
+
+% Spacing adjustments between title page elements
+\newcommand{\authorToTitle}{9cm}  % Space between author and title
+\newcommand{\authorMargin}{1.3cm} % Offset from page to author in cover
+
+% Minipage positioning and size
+\newcommand{\minipagePosition}{0.45}      % Horizontal position of minipage
+\newcommand{\minipageWidth}{0.52}         % Width of the minipage
+\newcommand{\minipageTopMargin}{1.7cm}    % Top margin of the minipage
+\newcommand{\minipageBottomMargin}{5.8cm} % Bottom margin to adjust local and date
+
+% Date margin adjustments (cover and back cover)
+\newcommand{\dateCoverOffset}{1.2cm}     % Date margin for cover
+\newcommand{\dateBackCoverOffset}{2.5cm} % Date margin for back cover
+
+% Paragraph spacing adjustments for minipage
+\newcommand{\minipageParagraphSpacingA}{0.8cm} % Space between paragraphs (type A)
+\newcommand{\minipageParagraphSpacingB}{0.2cm} % Space between paragraphs (type B)
+
+% Chapter title spacing adjustments
+\newcommand{\spaceHeaderChapter}{0cm}  % Space between header and chapter title
+\newcommand{\spaceAfterChapter}{1cm}   % Space after chapter title
+\newcommand{\offsetAfterChapter}{-1cm} % Necessary offset after chapter title
+
+% Margin before and after appendix titles (in points)
+\newcommand{\appendixTopMargin}{30pt}
+\newcommand{\appendixBottomMargin}{50pt}
+
+% Command to insert a minipage block with text, useful for title pages
+\newcommand{\minipageText}[1]{
+  \renewcommand{\documentType}{Dissertation (Master's degree)}
+  \comment{\vspace{1.0cm} Thesis submitted for the degree of Master of Science to the School of Engineering.}
+}
+
+% Field titles for various sections (can be customized or translated)
+\newcommand{\acknowledgmentName}{Acknowledgment}
+\newcommand{\abstractName}{Abstract}
+\newcommand{\summaryName}{Summary}
+\newcommand{\advisorTitle}{Advisor}
+\newcommand{\coadvisorTitle}{Co-Advisor}
+\newcommand{\concentrationField}{Concentration Field}
+\newcommand{\listAbbreviationName}{List of Abbreviations}
+\newcommand{\listSymbolName}{List of Symbols}
+\newcommand{\listFigureName}{List of Figures}
+\newcommand{\listTableName}{List of Tables}
+\newcommand{\referenceName}{References}
+\newcommand{\appendixName}{Appendix}

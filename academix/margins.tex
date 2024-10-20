@@ -1,0 +1,53 @@
+% -----------------------------------------------------------------------------
+% margins.tex
+%
+% This file sets the vertical and horizontal margins for the document.
+% It adjusts the header, top/bottom margins, and text width based on user-defined
+% settings for page layout.
+% -----------------------------------------------------------------------------
+
+% ----------------------------------------------------------------------
+% Vertical Margins
+% ----------------------------------------------------------------------
+
+\ifthenelse{\boolean{usePageHeader}}{
+    % If a header is present, calculate the distance between the top of the
+    % header and the top of the text:
+    % \headerTOtext = \headheight + \headsep
+    % Additionally, account for the header depth by subtracting 0.2 cm.
+    \setlength{\headsep}{\headerToText - 0.2cm - \headheight}
+
+    % The distance from the top of the page to the top of the text should be 2cm:
+    % 2cm = \topmargin + \voffset + 1in
+    \setlength{\topmargin}{\topMargin - 1in - \voffset}
+
+    % Set the bottom margin to ensure a 2cm distance from the bottom of the page
+    \setlength{\textheight}{%
+        \paperheight - \voffset - 1in - \topmargin - \headheight - \headsep - 2.0cm%
+    }
+}{
+    % If no header is present, calculate vertical margins without the header.
+    % Ensure equal margins at the top and bottom.
+    \setlength{\topmargin}{\headerToText - \headheight - \headsep - \voffset - 1in}
+
+    % Set the text height based on the top and bottom margins
+    \setlength{\textheight}{%
+        \paperheight - \topMargin - \footskip - \bottomMargin%
+    }
+}
+
+% ----------------------------------------------------------------------
+% Horizontal Margins
+% ----------------------------------------------------------------------
+
+% Set the left margin (for odd pages in two-sided documents)
+\setlength{\oddsidemargin}{\leftMargin - \hoffset - 1in}
+
+% For two-sided printing, set the right margin for even pages
+\setlength{\evensidemargin}{\rightMargin - \hoffset - 1in}
+
+% Calculate the text width based on the remaining space
+% \textwidth = \paperwidth - \oddsidemargin - \hoffset - 1in - \rightMargin
+\setlength{\textwidth}{
+    \paperwidth - \oddsidemargin - \hoffset - 1in - \rightMargin
+}

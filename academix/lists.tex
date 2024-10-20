@@ -1,0 +1,122 @@
+% -----------------------------------------------------------------------------
+% lists.tex
+%
+% This file contains the definitions for:
+%   - \tableofcontents
+%   - \listoffigures
+%   - \listoftables
+%   - list of abbreviations (\listofabbrv)
+%   - list of symbols (\listofsymbols)
+%   - Flexibility in handling captions
+% -----------------------------------------------------------------------------
+
+% Boolean to handle column restoration in two-column layouts
+\newboolean{restoreColumns}
+
+% ----------------------------------------------------------------------
+% \tableofcontents Redefinition
+% ----------------------------------------------------------------------
+
+% Redefine \tableofcontents to handle column layouts and custom chapter formatting
+\renewcommand{\tableofcontents}{
+    \ifthenelse{\boolean{@twocolumn}}
+    {\setboolean{restoreColumns}{true}\onecolumn}
+    {\setboolean{restoreColumns}{false}}
+    \if@openright\cleardoublepage\else\clearpage\fi
+    \thispagestyle{\chapterTitlePageStyle}
+    \global\@topnum\z@
+    \@afterindentfalse
+    \otherheadtrue\@makeschapterhead{\contentsname}
+    \@afterheading
+    \@mkboth{\contentsname}{\contentsname}
+    \@starttoc{toc}
+    \ifthenelse{\boolean{restoreColumns}}{\twocolumn}{}
+    \if@openright\cleardoublepage\else\clearpage\fi
+    \setboolean{afterTOC}{true}
+}
+
+% ----------------------------------------------------------------------
+% \listoffigures Redefinition
+% ----------------------------------------------------------------------
+
+% Redefine \listoffigures to handle column layouts and custom chapter formatting
+\renewcommand{\listoffigures}{
+    \ifthenelse{\boolean{@twocolumn}}
+    {\setboolean{restoreColumns}{true}\onecolumn}
+    {\setboolean{restoreColumns}{false}}
+    \renewcommand{\listfigurename}{\listFigureName}
+    \otherheadtrue\pretextualChapter{\listfigurename}
+    \@starttoc{lof}
+    \ifthenelse{\boolean{restoreColumns}}{\twocolumn}{}
+}
+
+% ----------------------------------------------------------------------
+% \listoftables Redefinition
+% ----------------------------------------------------------------------
+
+% Redefine \listoftables to handle column layouts and custom chapter formatting
+\renewcommand\listoftables{
+    \ifthenelse{\boolean{@twocolumn}}
+    {\setboolean{restoreColumns}{true}\onecolumn}
+    {\setboolean{restoreColumns}{false}}
+    \otherheadtrue\pretextualChapter{\listTableName}
+    \@starttoc{lot}
+    \ifthenelse{\boolean{restoreColumns}}{\twocolumn}{}
+}
+
+% ----------------------------------------------------------------------
+% List of Abbreviations Environment (\listofabbrv)
+% ----------------------------------------------------------------------
+
+\newenvironment{listofabbrv}[1]{
+    \otherheadtrue\pretextualChapter{\listabbrvname}
+    \begin{list}{\textbf{??}}{
+            \settowidth{\labelwidth}{#1}
+            \setlength{\labelsep}{1em}
+            \setlength{\itemindent}{0mm}
+            \setlength{\leftmargin}{\labelwidth}
+            \addtolength{\leftmargin}{\labelsep}
+            \setlength{\rightmargin}{0mm}
+            \setlength{\itemsep}{.1\baselineskip}
+            \renewcommand{\makelabel}[1]{\makebox[\labelwidth][l]{##1}}
+        }
+        }{
+    \end{list}
+}
+
+% ----------------------------------------------------------------------
+% List of Symbols Environment (\listofsymbols)
+% ----------------------------------------------------------------------
+
+\newenvironment{listofsymbols}[1]{
+    \otherheadtrue\pretextualChapter{\listSymbolName}
+    \begin{list}{\textbf{??}}{
+            \settowidth{\labelwidth}{#1}
+            \setlength{\labelsep}{1em}
+            \setlength{\itemindent}{0mm}
+            \setlength{\leftmargin}{\labelwidth}
+            \addtolength{\leftmargin}{\labelsep}
+            \setlength{\rightmargin}{0mm}
+            \setlength{\itemsep}{.1\baselineskip}
+            \renewcommand{\makelabel}[1]{\makebox[\labelwidth][l]{##1}}
+        }
+        }{
+    \end{list}
+}
+
+% ----------------------------------------------------------------------
+% Flexibility for Captions
+% ----------------------------------------------------------------------
+
+% Redefine how captions are handled to provide more flexibility
+\long\def\@makecaption#1#2{
+    \vskip\abovecaptionskip
+    \sbox\@tempboxa{#1\captionSeparator #2}
+    \ifdim \wd\@tempboxa > \hsize
+        #1\captionSeparator #2\par
+    \else
+        \global\@minipagefalse
+        \hb@xt@\hsize{\hfil\box\@tempboxa\hfil}
+    \fi
+    \vskip\belowcaptionskip
+}
