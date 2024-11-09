@@ -49,8 +49,8 @@
 % Title
 \providecommand{\titleData}{}
 \providecommand{\uppercaseTitleData}{}
-\newcommand{\customTitle}[1]{%
-    \renewcommand{\titleData}{#1}%
+\newcommand{\customTitle}[1]{
+    \renewcommand{\titleData}{#1}
     \renewcommand{\uppercaseTitleData}{\uppercase{#1}}
 }
 \newcommand{\titleFormat}{\titleSize\chapterTitleFont}
@@ -99,7 +99,7 @@
     \vspace*{-\authorMargin}
     \begin{center}
         \setSpacing{\oneHalfSpacingRate}
-        {\authorFormat \authorData} \\[\authorToTitle] % Author name
+        {\authorFormat \authorData} \\[\authorToTitle]
         {\titleFormat \titleData}
 
         % Minipage for comments
@@ -116,9 +116,8 @@
             \end{oneHalfSpacing}
         \end{minipage}
 
-        % Display location and date
         \vspace*{\minipageBottomMargin}
-        \begin{singleSpacing} % Single line spacing
+        \begin{singleSpacing}
             {\locationFormat\locationData}\\
             {\dateFormat\dateData}
         \end{singleSpacing}
@@ -145,11 +144,10 @@
                 \begin{sloppypar}
                     {
                         \commentFormat
-                        \commentData\\[\minipageParagraphSpacingB] % Comments and date positioning
+                        \commentData\\[\minipageParagraphSpacingB]
                     }
                 \end{sloppypar}
 
-                % Conditional display for concentration area, advisors, and co-advisors
                 \ifNotEmpty{\concentrationAreaData}{
                     {\concentrationAreaNameFormat\concentrationAreaName}
                     {\concentrationAreaFormat\concentrationAreaData}
@@ -168,9 +166,8 @@
             \end{oneHalfSpacing}
         \end{minipage}
 
-        % Display location and date
         \vspace*{\dateBackCoverOffset}
-        \begin{singleSpacing} % Single line spacing
+        \begin{singleSpacing}
             {\locationFormat\locationData}\\
             {\dateFormat\dateData}
         \end{singleSpacing}

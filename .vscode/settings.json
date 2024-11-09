@@ -28,6 +28,7 @@
         "%DOCFILE%.nav",
         "%DOCFILE%.vrb",
         "%DIR%/doc/*.aux",
-        "%DOCFILE%.synctex.gz"
+        "%DOCFILE%.synctex.gz",
+        "indent.log"
     ],
 }

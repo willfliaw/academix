@@ -5,7 +5,6 @@ Academix is a comprehensive and flexible LaTeX template designed for writing aca
 ## Features
 - Academic Document Class: Custom `academix` class for easy configuration.
 - Versatile Formatting Options: Supports articles, reports, and theses with automatic styling for chapters, sections, and appendices.
-- ABNT-style Citations: Citation management using `abntex2cite`, following Brazilian Technical Standards (ABNT).
 - Math and Theorem Support: Enhanced typesetting for equations, theorems, proofs, and mathematical symbols.
 - Advanced Float Handling: Improved figure and table placement with flexible formatting.
 - Built-in Customization: Includes user-friendly commands for author details, cover page setup, dedication, acknowledgments, and more.
@@ -21,7 +20,7 @@ To use this template, you need a TeX distribution such as [TeX Live](https://www
 
 Clone the repository to your local machine:
 ```bash
-git clone https://github.com/yourusername/academix.git
+git clone https://github.com/willfliaw/academix.git
 ```
 
 ### Usage
