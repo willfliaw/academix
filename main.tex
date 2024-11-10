@@ -88,21 +88,16 @@
 % - abnt-repeated-author-omit=yes: Omit repeated authors in the bibliography, replacing them with a dash (---).
 % - abnt-title-command=yes: Enable \citeauthor and \citetitle commands for citing only the author or the title.
 % - abnt-emphasize=bf: Emphasize the author's name in bold in citations.
-\usepackage[
-  alf,
-  abnt-repeated-author-omit=yes,
-  abnt-title-command=yes,
-  abnt-emphasize=bf
-]{abntex2cite}
+% \usepackage[
+%   alf,
+%   abnt-repeated-author-omit=yes,
+%   abnt-title-command=yes,
+%   abnt-emphasize=bf
+% ]{abntex2cite}
 
 % APA Style
-% \usepackage{cite}
-% \bibliographystyle{apalike}
-
-% THIS DOES NOT WORK (yet)
-% \usepackage[style=apa, backend=biber]{biblatex}
-% \usepackage[autostyle]{csquotes}
-% \addbibresource{doc/bibliography.bib}
+\usepackage{cite}
+\bibliographystyle{apalike}
 
 % Proper formatting and line breaking for URLs
 \usepackage{url}
@@ -185,9 +180,10 @@
 \tableofcontents
 
 % Textual elements
-\pagenumbering{arabic}
 \input{doc/introduction}
 
+
+\pagenumbering{arabic}
 \input{doc/literature}
 
 \input{doc/methodology}
@@ -198,9 +194,8 @@
 
 \input{doc/conclusion}
 
-% Post-textual elements
+Post-textual elements
 \bibliography{doc/bibliography}
-% \printbibliography
 \appendix
 \input{doc/apA}
 \annex
