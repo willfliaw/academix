@@ -161,30 +161,31 @@
 \sloppy
 
 \begin{document}
-\coverPage{}
 
-\backCover{}
+% -------------
+% External part
+% -------------
+\coverPage
 
+
+% -------------
+% Internal part
+% -------------
+
+% Pre-textual elements
 \pagenumbering{roman}
-
-\dedicationPage{}
-
+\backCover
+\dedicationPage
 \input{doc/acknowledgement}
-
 \input{doc/abstract}
-
-\listoffigures{}
-
-\listoftables{}
-
+\listoffigures
+\listoftables
 \input{doc/abbreviations}
-
 \input{doc/symbols}
+\tableofcontents
 
-\tableofcontents{}
-
+% Textual elements
 \pagenumbering{arabic}
-
 \input{doc/introduction}
 
 \input{doc/literature}
@@ -197,12 +198,11 @@
 
 \input{doc/conclusion}
 
+% Post-textual elements
 \bibliography{doc/bibliography}
 % \printbibliography
-
-\appendix{}
+\appendix
 \input{doc/apA}
-
-\annex{}
+\annex
 \input{doc/anA}
 \end{document}
