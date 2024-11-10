@@ -44,21 +44,24 @@
     \renewcommand{\chaptermark}[1]{
         \markboth{
             \ifnum \c@secnumdepth > \m@ne
-                \thechapter{}
-            \fi ##1
+                \thechapter\ \ %
+            \fi
+            ##1
         }{
             \ifnum \c@secnumdepth > \m@ne
-                \thechapter{}
-            \fi ##1
+                \thechapter\ \ %
+            \fi
+            ##1
         }
     }
 
     % Define how \section marks the header
-    \renewcommand{\sectionmark}[1]{%
+    \renewcommand{\sectionmark}[1]{
         \markright{
             \ifnum \c@secnumdepth > \z@
                 \thesection\ \ %
-            \fi ##1
+            \fi
+            ##1
         }
     }
 }
@@ -69,10 +72,10 @@
 % A simpler page style with just the page number in the header
 
 \newcommand{\ps@plainheader}{
-    \renewcommand{\@oddfoot}{} % No footer on odd pages
-    \renewcommand{\@evenfoot}{} % No footer on even pages
-    \renewcommand{\@oddhead}{\hfill{\thePageFormat\thepage}}% Page number on the right for odd pages
-    \renewcommand{\@evenhead}{{\thePageFormat\thepage}\hfill}% Page number on the left for even pages
+    \renewcommand{\@oddfoot}{}
+    \renewcommand{\@evenfoot}{}
+    \renewcommand{\@oddhead}{\hfill{\thePageFormat\thepage}}
+    \renewcommand{\@evenhead}{{\thePageFormat\thepage}\hfill}
 
     % Ensure \chapter* shows the header
     \let\@mkboth\customMarkBoth
@@ -109,11 +112,23 @@
     \renewcommand{\@oddfoot}{}
     \renewcommand{\@evenfoot}{}
     \renewcommand{\@oddhead}
-    {\underline{\makebox[\textwidth]{\raisebox{-.5ex}{}
-    {\rightMarkFormat\rightmark}\hfill{\thePageFormat\thepage}}}}
+    {
+        \underline{
+            \makebox[\textwidth]{
+                \raisebox{-.5ex}{}
+                {\rightMarkFormat\rightmark}\hfill{\thePageFormat\thepage}
+            }
+        }
+    }
     \renewcommand{\@evenhead}
-    {\underline{\makebox[\textwidth]{\raisebox{-.5ex}{}
-    {\thePageFormat\thepage}\hfill{\leftMarkFormat\leftmark}}}}
+    {
+        \underline{
+            \makebox[\textwidth]{
+                \raisebox{-.5ex}{}
+                {\thePageFormat\thepage}\hfill{\leftMarkFormat\leftmark}
+            }
+        }
+    }
 
     % Ensure \chapter* shows the header
     \let\@mkboth\customMarkBoth
@@ -136,9 +151,25 @@
         \markright{
             \ifnum \c@secnumdepth > \z@
                 \thesection\ \ %
-            \fi ##1%
+            \fi ##1
         }
     }
+}
+
+% ---------------------------------------------------------------------
+% Page Style: "fancyPlain"
+% ---------------------------------------------------------------------
+% A page style with underlined headers for both odd and even pages
+% after the title page
+
+\newcommand{\ps@fancyPlain}{
+    \lhead{\fancyplain{}{\textit{\leftmark}}}
+    \chead{}
+    \rhead{\fancyplain{}{\thepage}}
+    \lfoot{}
+    \cfoot{}
+    \rfoot{}
+    \pagestyle{fancyplain}
 }
 
 % ---------------------------------------------------------------------

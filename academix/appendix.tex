@@ -26,20 +26,20 @@
         \ifthenelse{\equal{#1}{}}
         {\def\thechapter{\anApChapterName{} \Alph{chapter}}}
         {\def\thechapter{\anApChapterName{} \Alph{chapter}{} \crossbar{} #1}}
-        \customChapterMark{}
+        \customChapterMark{\Alph{chapter}{} \crossbar{} #1}
         \endgroup
         \if@twocolumn
-            \@topnewpage[\@makeAnApChapterHeader{#2}]
+            \@topnewpage[\@makeAnApChapterHead{#2}]
         \else
-            \@makeAnApChapterHeader{#2}
+            \@makeAnApChapterHead{#2}
             \@afterheading
         \fi
     }{
         \customChapterMark{#1}
         \if@twocolumn
-            \@topnewpage[\@makeChapterHead{#2}]
+            \@topnewpage[\@makechapterhead{#2}]
         \else
-            \@makeChapterHead{#2}
+            \@makechapterhead{#2}
             \@afterheading
         \fi
     }
@@ -72,7 +72,7 @@
 \newcommand{\anApSize}{\LARGE}
 
 % Define how appendix chapters are typeset
-\def\@makeAnApChapterHeader#1{
+\def\@makeAnApChapterHead#1{
     {
         \normalfont\chapterTitleFont\anApSize
         \setSpacing{single}

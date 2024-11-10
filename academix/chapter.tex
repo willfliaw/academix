@@ -12,15 +12,12 @@
 % and formatting of chapter and section headers.
 % ----------------------------------------------------------------------------
 
-% Define command to allow optional starred sections
-\def\customSectionDefinition#1#2{\@ifstar{\@dblarg{#2}}{\@dblarg{#1}}}
-
 % Redefine \chapter to include custom page style and manage pretextual chapters
 \renewcommand\chapter {
     \if@openright\cleardoublepage\else\clearpage\fi
     \thispagestyle{\chapterTitlePageStyle}
     \ifthenelse{\boolean{inPretext}}{
-        \ifthenelse{\boolean{afterTOC}} {
+        \ifthenelse{\boolean{afterTOC}}{
             \setboolean{inPretext}{false}
             \beginTextualPart
         }{}
@@ -47,7 +44,7 @@
     \endgroup
 }
 
-% Remove the next chapter or section from the Table of Contents
+% To remove the next chapter or section from the Table of Contents
 \newboolean{nextOutOfTOC}
 \setboolean{nextOutOfTOC}{false}
 

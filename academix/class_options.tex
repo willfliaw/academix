@@ -38,6 +38,13 @@
 % Enables splitting text into multiple columns with balanced content, useful for newspapers, newsletters, etc.
 \RequirePackage{multicol}
 
+% Customizable headers and footers:
+% - fancyhdr: Provides flexible header/footer customization
+%             and fancyplain pagestyle
+% - headheight: Set header height to 15pt for proper spacing
+\usepackage{fancyhdr}
+\setlength{\headheight}{15pt}
+
 % -------------------------------------------------------------------
 % OPTION DECLARATIONS
 % -------------------------------------------------------------------
@@ -75,10 +82,11 @@
 % -------------------
 \newboolean{usePageHeader}
 \providecommand{\pageHeaderType}{\relax}
-\DeclareOption{noHeader}      {\setboolean{usePageHeader}{false}}
-\DeclareOption{normalHeader}  {\setboolean{usePageHeader}{true}\renewcommand{\pageHeaderType}{normal}}
-\DeclareOption{plainHeader}   {\setboolean{usePageHeader}{true}\renewcommand{\pageHeaderType}{plain}}
-\DeclareOption{ruledHeader}   {\setboolean{usePageHeader}{true}\renewcommand{\pageHeaderType}{ruled}}
+\DeclareOption{noHeader}          {\setboolean{usePageHeader}{false}}
+\DeclareOption{normalHeader}      {\setboolean{usePageHeader}{true}\renewcommand{\pageHeaderType}{normal}}
+\DeclareOption{plainHeader}       {\setboolean{usePageHeader}{true}\renewcommand{\pageHeaderType}{plain}}
+\DeclareOption{ruledHeader}       {\setboolean{usePageHeader}{true}\renewcommand{\pageHeaderType}{ruled}}
+\DeclareOption{fancyPlainHeader}  {\setboolean{usePageHeader}{true}\renewcommand{\pageHeaderType}{fancyPlain}}
 \ExecuteOptions{plainHeader}
 
 % Use capital letters for chapter or section titles

@@ -3,7 +3,8 @@
   upppercaseChapter,
   doubleSpacing,
   normalTOC,
-  noIndentAnAp
+  noIndentAnAp,
+  fancyPlainHeader
 ]{academix/academix}
 
 % ------------------------------------------------------------------
@@ -11,7 +12,14 @@
 % ------------------------------------------------------------------
 
 % Enables hyperlinks and defines their appearance
-\usepackage[bookmarks,colorlinks,citecolor=black,urlcolor=blue,linkcolor=black,pdfpagemode=UseNone]{hyperref}
+\usepackage[
+  bookmarks,
+  colorlinks,
+  citecolor=black,
+  urlcolor=blue,
+  linkcolor=black,
+  pdfpagemode=UseNone
+]{hyperref}
 
 % ------------------------------------------------------------------
 % MATHEMATICS SUPPORT
@@ -80,7 +88,12 @@
 % - abnt-repeated-author-omit=yes: Omit repeated authors in the bibliography, replacing them with a dash (---).
 % - abnt-title-command=yes: Enable \citeauthor and \citetitle commands for citing only the author or the title.
 % - abnt-emphasize=bf: Emphasize the author's name in bold in citations.
-\usepackage[alf,abnt-repeated-author-omit=yes,abnt-title-command=yes,abnt-emphasize=bf]{abntex2cite}
+\usepackage[
+  alf,
+  abnt-repeated-author-omit=yes,
+  abnt-title-command=yes,
+  abnt-emphasize=bf
+]{abntex2cite}
 
 % APA Style
 % \usepackage{cite}
@@ -128,27 +141,11 @@
 \usepackage{pdfpages}
 
 % ------------------------------------------------------------------
-% PAGE LAYOUT AND FORMATTING
-% ------------------------------------------------------------------
-
-% Customizable headers and footers:
-% - fancyhdr: Provides flexible header/footer customization
-% - headheight: Set header height to 15pt for proper spacing
-\usepackage{fancyhdr}
-\setlength{\headheight}{15pt}
-
-% ------------------------------------------------------------------
 % MISCELLANEOUS
 % ------------------------------------------------------------------
 \renewcommand{\customChapterMark}[1]{\markboth{#1}{}}
 \renewcommand{\customSectionMark}[1]{\markright{#1}{}}
 \newcommand{\source}[1]{\\Source: {#1}}
-\lhead{\fancyplain{}{\textit{\leftmark}}}
-\chead{}
-\rhead{\fancyplain{}{\thepage}}
-\lfoot{}
-\cfoot{}
-\rfoot{}
 
 \customAuthor{John Doe}
 

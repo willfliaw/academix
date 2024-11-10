@@ -30,7 +30,11 @@
         {
             \ifthenelse{\equal{\pageHeaderType}{normal}}
             {\pagestyle{header}}
-            {\pagestyle{ruledheader}}
+            {
+                \ifthenelse{\equal{\pageHeaderType}{ruled}}
+                {\pagestyle{ruledheader}}
+                {\pagestyle{fancyPlain}}
+            }
         }
         \renewcommand{\chapterTitlePageStyle}{plainheader}
     }{
@@ -61,7 +65,11 @@
                 {
                     \ifthenelse{\equal{\pageHeaderType}{normal}}
                     {\pagestyle{header}}
-                    {\pagestyle{ruledheader}}
+                    {
+                        \ifthenelse{\equal{\pageHeaderType}{ruled}}
+                        {\pagestyle{ruledheader}}
+                        {\pagestyle{fancyPlain}}
+                    }
                 }
                 \renewcommand{\chapterTitlePageStyle}{plainheader}
             }{
@@ -82,7 +90,11 @@
             {
                 \ifthenelse{\equal{\pageHeaderType}{normal}}
                 {\pagestyle{header}}
-                {\pagestyle{ruledheader}}
+                {
+                    \ifthenelse{\equal{\pageHeaderType}{ruled}}
+                    {\pagestyle{ruledheader}}
+                    {\pagestyle{fancyPlain}}
+                }
             }
             \renewcommand{\chapterTitlePageStyle}{plainheader}
         }{
