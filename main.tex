@@ -1,7 +1,6 @@
 \documentclass[
   a4paper,
   upppercaseChapter,
-  doubleSpacing,
   normalTOC,
   noIndentAnAp,
   fancyPlainHeader,
@@ -149,9 +148,7 @@
 \newcommand{\source}[1]{\\Source: {#1}}
 
 \customAuthor{John Doe}
-
 \customTitle{Title}
-
 \location{Gotham}
 \customDate{2024}
 
@@ -164,28 +161,27 @@
 \sloppy
 
 \begin{document}
-
 \coverPage{}
 
 \backCover{}
 
 \pagenumbering{roman}
 
-\dedicationPage
+\dedicationPage{}
 
 \input{doc/acknowledgement}
 
 \input{doc/abstract}
 
-\listoffigures
+\listoffigures{}
 
-\listoftables
+\listoftables{}
 
 \input{doc/abbreviations}
 
 \input{doc/symbols}
 
-\tableofcontents
+\tableofcontents{}
 
 \pagenumbering{arabic}
 
@@ -204,10 +200,9 @@
 \bibliography{doc/bibliography}
 % \printbibliography
 
-\appendix
+\appendix{}
 \input{doc/apA}
 
-\annex
+\annex{}
 \input{doc/anA}
-
 \end{document}

@@ -51,9 +51,9 @@
     \ifthenelse{\equal{#1}{single}}
     {\setstretch{\singleSpacingRate}}{
         \ifthenelse{\equal{#1}{oneHalf}}
-        {\setstretch{\oneHalfSpacing}}{
+        {\setstretch{\oneHalfSpacingRate}}{
             \ifthenelse{\equal{#1}{double}}
-            {\setstretch{\doubleSpacing}}
+            {\setstretch{\doubleSpacingRate}}
             {\setstretch{#1}}
         }
     }

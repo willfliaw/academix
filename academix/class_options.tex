@@ -2,11 +2,12 @@
 % class_options.tex
 %
 % This file defines various options for the class, including:
-%   - page numbering schemes (ABNT-style, plain, Roman-Arabic mix)
+%   - page numbering schemes (empty until the TOC, plain, Roman-Arabic mix)
 %   - inclusion of bibliography, index, and starred chapters in the TOC
 %   - style of page numbers in the Table of Contents
 %   - independent numbering for figures and tables (independent of sections)
 %   - page header options (normal, plain, ruled, or no header)
+%   - starting chapters in new page
 %   - capitalization options for chapter and section titles
 %   - annex and appendix title formatting (capitalization, indentation)
 %   - line spacing options (single, one and a half, double)
@@ -50,10 +51,10 @@
 % Page numbering scheme
 % ---------------------
 \providecommand{\pageNumberingScheme}{}
-\DeclareOption{pageNumberingABNT}      {\renewcommand{\pageNumberingScheme}{ABNT}}
-\DeclareOption{pageNumberingPlain}     {\renewcommand{\pageNumberingScheme}{plain}}
-\DeclareOption{pageNumberingRomArab}   {\renewcommand{\pageNumberingScheme}{RomSumArab}}
-\ExecuteOptions{pageNumberingABNT}
+\DeclareOption{pageNumberingEmptyUntilTOC}   {\renewcommand{\pageNumberingScheme}{emptyUntilTOC}}
+\DeclareOption{pageNumberingPlain}           {\renewcommand{\pageNumberingScheme}{plain}}
+\DeclareOption{pageNumberingRomArab}         {\renewcommand{\pageNumberingScheme}{RomSumArab}}
+\ExecuteOptions{pageNumberingEmptyUntilTOC}
 
 % Include special sections (Bibliography, Index) in TOC or not
 % ------------------------------------------------------------
@@ -89,10 +90,12 @@
 
 % Start chapters on a new page
 % ----------------------------
+% Disclaimer: this is incompatible with twocolumn,
+% use multicols instead
 \newboolean{newPageChapter}
 \providecommand{\pageHeaderType}{\relax}
-\DeclareOption{newPageChapter}      {\setboolean{newPageChapter}{true}}
-\DeclareOption{samePageChapter}      {\setboolean{newPageChapter}{false}}
+\DeclareOption{newPageChapter}   {\setboolean{newPageChapter}{true}}
+\DeclareOption{samePageChapter}  {\setboolean{newPageChapter}{false}}
 \ExecuteOptions{newPageChapter}
 
 
@@ -134,7 +137,7 @@
 \DeclareOption{singleSpacing}    {\renewcommand*{\LineSpacingDefault}{\singleSpacingRate}}
 \DeclareOption{oneHalfSpacing}   {\renewcommand*{\LineSpacingDefault}{\oneHalfSpacingRate}}
 \DeclareOption{doubleSpacing}    {\renewcommand*{\LineSpacingDefault}{\doubleSpacingRate}}
-\ExecuteOptions{doubleSpacing}
+\ExecuteOptions{oneHalfSpacing}
 
 % Auto-bold math: math font changes to bold if text is bold
 % ---------------------------------------------------------

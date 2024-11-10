@@ -22,18 +22,14 @@
     \setlength{\topmargin}{\topMargin - 1in - \voffset}
 
     % Set the bottom margin to ensure a 2cm distance from the bottom of the page
-    \setlength{\textheight}{%
-        \paperheight - \voffset - 1in - \topmargin - \headheight - \headsep - 2.0cm%
-    }
+    \setlength{\textheight}{\paperheight - \voffset - 1in - \topmargin - \headheight - \headsep - 2.0cm}
 }{
     % If no header is present, calculate vertical margins without the header.
     % Ensure equal margins at the top and bottom.
     \setlength{\topmargin}{\headerToText - \headheight - \headsep - \voffset - 1in}
 
     % Set the text height based on the top and bottom margins
-    \setlength{\textheight}{%
-        \paperheight - \topMargin - \footskip - \bottomMargin%
-    }
+    \setlength{\textheight}{\paperheight - \topMargin - \footskip - \bottomMargin}
 }
 
 % ---------------------------------------------------------------------

@@ -29,7 +29,7 @@
 % Advisor
 \providecommand{\advisorData}{}
 \providecommand{\advisorName}{}
-\newcommand{\advisor}[2][\advisorTitle:\vspace{1mm}\\]{
+\newcommand{\advisor}[2][\advisorTitle: ]{
     \renewcommand{\advisorName}{#1}
     \renewcommand{\advisorData}{#2}
 }
@@ -39,7 +39,7 @@
 % Co-advisor
 \providecommand{\coAdvisorData}{}
 \providecommand{\coAdvisorName}{}
-\newcommand{\coAdvisor}[2][\coAdvisorTitle:\vspace{1mm}\\]{
+\newcommand{\coAdvisor}[2][\coAdvisorTitle: ]{
     \renewcommand{\coAdvisorName}{#1}
     \renewcommand{\coAdvisorData}{#2}
 }
@@ -63,7 +63,7 @@
 % Concentration Area
 \providecommand{\concentrationAreaData}{}
 \providecommand{\concentrationAreaName}{}
-\newcommand{\concentrationArea}[2][\concentrationField:\vspace{1mm}\\]{
+\newcommand{\concentrationArea}[2][\concentrationField: ]{
     \renewcommand{\concentrationAreaName}{#1}
     \renewcommand{\concentrationAreaData}{#2}
 }
@@ -95,33 +95,30 @@
 % ---------------------------------------------------------------------
 
 \newcommand{\coverPage}{
-    \vspace*{-\authorMargin}
-    \begin{center}
-        \setSpacing{\oneHalfSpacingRate}
-        {\authorFormat \authorData} \\[\authorToTitle]
-        {\titleFormat \titleData}
+    \begin{titlepage}
+        \vspace*{-\authorMargin}
+        \begin{center}
+            \setSpacing{oneHalf}
+            {\authorFormat\authorData}\\[\authorToTitle]
+            {\titleFormat\titleData}
 
-        % Minipage for comments
-        \vspace{\minipageTopMargin}
-        \hspace{\minipagePosition\textwidth}
-        \begin{minipage}{\minipageWidth\textwidth}
-            \begin{oneHalfSpacing}
-                \begin{sloppypar}
-                    {
-                        \commentFormat
-                        \commentData\\[\minipageParagraphSpacingB]
-                    }
-                \end{sloppypar}
-            \end{oneHalfSpacing}
-        \end{minipage}
+            % Minipage for comments
+            \vspace*{\minipageTopMargin}
+            \hspace*{\minipagePosition\textwidth}
+            \begin{minipage}{\minipageWidth\paperwidth}
+                \begin{singleSpacing}
+                    \begin{sloppypar}
+                        {\commentFormat\commentData}\\
+                    \end{sloppypar}
+                \end{singleSpacing}
+            \end{minipage}
 
-        \vspace*{\minipageBottomMargin}
-        \begin{singleSpacing}
+            \vfill
             {\locationFormat\locationData}\\
             {\dateFormat\dateData}
-        \end{singleSpacing}
-        \if@openright\cleardoublepage\else\clearpage\fi
-    \end{center}
+            \if@openright\cleardoublepage\else\clearpage\fi
+        \end{center}
+    \end{titlepage}
 }
 
 % ---------------------------------------------------------------------
@@ -129,47 +126,43 @@
 % ---------------------------------------------------------------------
 
 \newcommand{\backCover}{
-    \vspace*{-\authorMargin}
-    \begin{center}
-        \setSpacing{\oneHalfSpacingRate}
-        {\authorFormat \authorData} \\[\authorToTitle]
-        {\titleFormat \titleData}
+    \begin{titlepage}
+        \vspace*{-\authorMargin}
+        \begin{center}
+            \setSpacing{oneHalf}
+            {\authorFormat\authorData}\\[\authorToTitle]
+            {\titleFormat\titleData}
 
-        % Minipage for comments, concentration area, and advisors
-        \vspace{\minipageTopMargin}
-        \hspace{\minipagePosition\textwidth}
-        \begin{minipage}{\minipageWidth\textwidth}
-            \begin{oneHalfSpacing}
-                \begin{sloppypar}
-                    {
-                        \commentFormat
-                        \commentData\\[\minipageParagraphSpacingB]
+            % Minipage for comments, concentration area, and advisors
+            \vspace*{\minipageTopMargin}
+            \hspace*{\minipagePosition\textwidth}
+            \begin{minipage}{\minipageWidth\paperwidth}
+                \begin{singleSpacing}
+                    \begin{sloppypar}
+                        {\commentFormat\commentData}\\
+                    \end{sloppypar}
+
+                    \ifNotEmpty{\concentrationAreaData}{
+                        {\concentrationAreaNameFormat\concentrationAreaName}
+                        {\concentrationAreaFormat\concentrationAreaData}\\
                     }
-                \end{sloppypar}
 
-                \ifNotEmpty{\concentrationAreaData}{
-                    {\concentrationAreaNameFormat\concentrationAreaName}
-                    {\concentrationAreaFormat\concentrationAreaData}
-                    \par
-                }
-                \ifNotEmpty{\advisorData}{
-                    \vspace{\minipageParagraphSpacingA}
-                    {\advisorNameFormat\advisorName}
-                    {\advisorFormat\advisorData}\protect\\
-                }
-                \ifNotEmpty{\coAdvisorData}{
-                    \vspace{\minipageParagraphSpacingA}
-                    {\coAdvisorNameFormat\coAdvisorName}
-                    {\coAdvisorFormat\coAdvisorData}
-                }
-            \end{oneHalfSpacing}
-        \end{minipage}
+                    \ifNotEmpty{\advisorData}{
+                        % \vspace{\minipageParagraphSpacingA}
+                        {\advisorNameFormat\advisorName\advisorFormat\advisorData}\\
+                    }
 
-        \vspace*{\dateBackCoverOffset}
-        \begin{singleSpacing}
+                    \ifNotEmpty{\coAdvisorData}{
+                        % \vspace{\minipageParagraphSpacingA}
+                        {\coAdvisorNameFormat\coAdvisorName\coAdvisorFormat\coAdvisorData}
+                    }
+                \end{singleSpacing}
+            \end{minipage}
+
+            \vfill
             {\locationFormat\locationData}\\
             {\dateFormat\dateData}
-        \end{singleSpacing}
-        \clearpage
-    \end{center}
+            \clearpage
+        \end{center}
+    \end{titlepage}
 }

@@ -22,29 +22,33 @@
 % ---------------------------------------------------------------------
 
 \ifthenelse{\equal{\pageNumberingScheme}{plain}}{
-    \setboolean{inPretext}{false}
-    \setboolean{afterTOC}{true}
+    % Plain page style initially
     \ifthenelse{\boolean{usePageHeader}}{
-        \ifthenelse{\equal{\pageHeaderType}{plain}}
-        {\pagestyle{plainheader}}
-        {
-            \ifthenelse{\equal{\pageHeaderType}{normal}}
-            {\pagestyle{header}}
-            {
-                \ifthenelse{\equal{\pageHeaderType}{ruled}}
-                {\pagestyle{ruledheader}}
-                {\pagestyle{fancyPlain}}
-            }
-        }
+        \pagestyle{plainheader}
         \renewcommand{\chapterTitlePageStyle}{plainheader}
-    }{
-        \pagestyle{plain}
-        \renewcommand{\chapterTitlePageStyle}{plain}
+    }{}
+
+    \renewcommand{\beginTextualPart}{
+        \ifthenelse{\boolean{usePageHeader}}{
+            \ifthenelse{\equal{\pageHeaderType}{plain}}
+            {\pagestyle{plainheader}}{
+                \ifthenelse{\equal{\pageHeaderType}{normal}}
+                {\pagestyle{header}}{
+                    \ifthenelse{\equal{\pageHeaderType}{ruled}}
+                    {\pagestyle{ruledheader}}
+                    {\pagestyle{fancyPlain}}
+                }
+            }
+            \renewcommand{\chapterTitlePageStyle}{plainheader}
+        }{
+            \pagestyle{plain}
+            \renewcommand{\chapterTitlePageStyle}{plain}
+        }
     }
 }{
-    \ifthenelse{\equal{\pageNumberingScheme}{ABNT}}{
+    \ifthenelse{\equal{\pageNumberingScheme}{emptyUntilTOC}}{
         % ---------------------------------------------------------------------
-        % ABNT-style page numbering (empty pages until the TOC)
+        % Empty pages until the TOC
         % ---------------------------------------------------------------------
         % - No page numbers until the TOC, then applies appropriate page numbering
         %   depending on header options (plain or custom).
@@ -54,18 +58,16 @@
         \let\oldEndTitlePage\endtitlepage\relax
         \renewcommand{\endtitlepage}{\oldEndTitlePage\addtocounter{page}{1}}
 
-        \pagestyle{empty}              % No page style initially
-        \renewcommand{\thepage}{}      % No page numbers
+        \pagestyle{empty}         % No page style initially
+        \renewcommand{\thepage}{} % No page numbers
         \renewcommand{\chapterTitlePageStyle}{empty}
         \renewcommand{\beginTextualPart}{
-            \renewcommand{\thepage}{\arabic{page}} % Start Arabic numbering in text
-            \ifthenelse{\boolean{usePageHeader}}{ % Apply header style if enabled
+            \renewcommand{\thepage}{\arabic{page}}
+            \ifthenelse{\boolean{usePageHeader}}{
                 \ifthenelse{\equal{\pageHeaderType}{plain}}
-                {\pagestyle{plainheader}}
-                {
+                {\pagestyle{plainheader}}{
                     \ifthenelse{\equal{\pageHeaderType}{normal}}
-                    {\pagestyle{header}}
-                    {
+                    {\pagestyle{header}}{
                         \ifthenelse{\equal{\pageHeaderType}{ruled}}
                         {\pagestyle{ruledheader}}
                         {\pagestyle{fancyPlain}}
@@ -84,31 +86,34 @@
         % - Before the TOC: Roman numerals (page counter starts after the title page)
         % - After the TOC: Arabic numerals, starting from 1 again.
 
-        \ifthenelse{\boolean{usePageHeader}}{ % Apply header style if enabled
-            \ifthenelse{\equal{\pageHeaderType}{plain}}
-            {\pagestyle{plainheader}}
-            {
-                \ifthenelse{\equal{\pageHeaderType}{normal}}
-                {\pagestyle{header}}
-                {
-                    \ifthenelse{\equal{\pageHeaderType}{ruled}}
-                    {\pagestyle{ruledheader}}
-                    {\pagestyle{fancyPlain}}
-                }
-            }
-            \renewcommand{\chapterTitlePageStyle}{plainheader}
-        }{
-            \pagestyle{plain}
-            \renewcommand{\chapterTitlePageStyle}{plain}
-        }
-
         % Set Roman numerals for the pretext section
         \renewcommand{\thepage}{\roman{page}}
+
+        % Plain page style initially
+        \ifthenelse{\boolean{usePageHeader}}{
+            \pagestyle{plainheader}
+            \renewcommand{\chapterTitlePageStyle}{plainheader}
+        }{}
 
         % At the beginning of the main text, switch to Arabic numerals
         \renewcommand{\beginTextualPart}{
             \renewcommand{\thepage}{\arabic{page}} % Switch to Arabic numerals
             \setcounter{page}{1}                   % Reset page counter to 1
+            \ifthenelse{\boolean{usePageHeader}}{
+                \ifthenelse{\equal{\pageHeaderType}{plain}}
+                {\pagestyle{plainheader}}{
+                    \ifthenelse{\equal{\pageHeaderType}{normal}}
+                    {\pagestyle{header}}{
+                        \ifthenelse{\equal{\pageHeaderType}{ruled}}
+                        {\pagestyle{ruledheader}}
+                        {\pagestyle{fancyPlain}}
+                    }
+                }
+                \renewcommand{\chapterTitlePageStyle}{plainheader}
+            }{
+                \pagestyle{plain}
+                \renewcommand{\chapterTitlePageStyle}{plain}
+            }
         }
     }
 }

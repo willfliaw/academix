@@ -22,11 +22,11 @@
         \vspace{6cm}
         \ifNotEmpty{\dedicationData}{
             \hspace{.47\textwidth}
-            \begin{minipage}{.5\textwidth}
-                \begin{singleSpacing}
+            \begin{minipage}{\minipageWidth\textwidth}
+                \begin{oneHalfSpacing}
                     \vspace{20cm}
                     {\commentFormat\dedicationData}\protect\\\par
-                \end{singleSpacing}
+                \end{oneHalfSpacing}
             \end{minipage}
         }
         \vspace{.8cm}
@@ -43,7 +43,7 @@
     \if@openright\cleardoublepage\else\clearpage\fi
     \otherheadtrue\pretextualChapter{\acknowledgmentName}
     \begin{oneHalfSpacing}
-        }{
+}{
     \end{oneHalfSpacing}\newpage
 }
 
@@ -102,17 +102,17 @@
 % ---------------------------------------------------------------------
 
 \AtBeginDocument{%
-    \ifthenelse{\boolean{autoBoldMath}\and\not\isundefined{\mv@bold}}% If auto bold math is enabled
-    {
-        % Redefine bold commands to also affect math mode
-        \let\ABNToldbfseries\bfseries\relax%
-        \renewcommand{\bfseries}{\mathversion{bold}\ABNToldbfseries}%
+    \ifthenelse{\boolean{autoBoldMath}\and\not\isundefined{\mv@bold}}{
+        % If auto bold math is enabled, redefine bold commands to also
+        % affect math mode
+        \let\oldbfseries\bfseries\relax
+        \renewcommand{\bfseries}{\mathversion{bold}\oldbfseries}
 
-        \let\ABNToldtextbf\textbf\relax%
-        \renewcommand{\textbf}[1]{\ABNToldtextbf{\mathversion{bold}#1}}%
+        \let\oldtextbf\textbf\relax
+        \renewcommand{\textbf}[1]{\oldtextbf{\mathversion{bold}#1}}
 
-        \let\ABNToldbf\bf\relax%
-        \renewcommand{\bf}{\mathversion{bold}\ABNToldbf}%
+        \let\oldbf\bf\relax
+        \renewcommand{\bf}{\mathversion{bold}\oldbf}
     }
     {}
 }
