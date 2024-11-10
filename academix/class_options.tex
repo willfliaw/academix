@@ -74,12 +74,12 @@
 % Page header options
 % -------------------
 \newboolean{usePageHeader}
-\providecommand{\PageHeaderType}{\relax}
-\DeclareOption{noheader}      {\setboolean{usePageHeader}{false}}
-\DeclareOption{header}        {\setboolean{usePageHeader}{true}\renewcommand{\PageHeaderType}{normal}}
-\DeclareOption{plainheader}   {\setboolean{usePageHeader}{true}\renewcommand{\PageHeaderType}{plain}}
-\DeclareOption{ruledheader}   {\setboolean{usePageHeader}{true}\renewcommand{\PageHeaderType}{ruled}}
-\ExecuteOptions{plainheader}
+\providecommand{\pageHeaderType}{\relax}
+\DeclareOption{noHeader}      {\setboolean{usePageHeader}{false}}
+\DeclareOption{normalHeader}  {\setboolean{usePageHeader}{true}\renewcommand{\pageHeaderType}{normal}}
+\DeclareOption{plainHeader}   {\setboolean{usePageHeader}{true}\renewcommand{\pageHeaderType}{plain}}
+\DeclareOption{ruledHeader}   {\setboolean{usePageHeader}{true}\renewcommand{\pageHeaderType}{ruled}}
+\ExecuteOptions{plainHeader}
 
 % Use capital letters for chapter or section titles
 % -------------------------------------------------
@@ -142,13 +142,6 @@
 \DeclareOption{noIndentFirst}   {\setboolean{indentFirstParagraph}{false}}
 \ExecuteOptions{indentFirst}
 
-% Draft mode: Enables draft settings (e.g., highlighting overflows)
-% -----------------------------------------------------------------
-\newboolean{DraftMode}
-\DeclareOption{draft}     {\setboolean{DraftMode}{true}}
-\DeclareOption{noDraft}   {\setboolean{DraftMode}{false}}
-\ExecuteOptions{noDraft}
-
 % Store and manage all currently selected options
 % -----------------------------------------------
 \def\CurrentOptionsList{}
@@ -166,13 +159,13 @@
     \AddCurrentOptionToList
     \ifthenelse{
         \equal{\CurrentOption}{10pt}\or\equal{\CurrentOption}{11pt}
-    }{\setboolean{UseCustomFontSize}{true}}{}
+    }{\setboolean{useCustomFontSize}{true}}{}
     \ifthenelse{
         \equal{\CurrentOption}{a5paper}\or\equal{\CurrentOption}{b5paper}\or\equal{\CurrentOption}{letterpaper}
-    }{\setboolean{UseCustomPaperSize}{true}}{}
+    }{\setboolean{useCustomPaperSize}{true}}{}
     \ifthenelse{
         \equal{\CurrentOption}{openany}
-    }{\setboolean{UseOpenStyle}{true}}{}
+    }{\setboolean{useOpenStyle}{true}}{}
     \PassOptionsToClass{\CurrentOption}{report}
 }
 

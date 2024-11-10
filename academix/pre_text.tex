@@ -1,4 +1,4 @@
-% -----------------------------------------------------------------------------
+% ----------------------------------------------------------------------------
 % pre_text.tex
 %
 % This file defines the pre-textual elements for the cover and back cover.
@@ -7,14 +7,14 @@
 %   - Formatting for fields such as concentration area, location, date, and dedication
 %   - Functions to conditionally include fields only if they are non-empty
 %   - Commands for generating the cover and back cover pages
-% -----------------------------------------------------------------------------
+% ----------------------------------------------------------------------------
 
 % Formatting commands for various elements
 \newcommand{\fcformat}{\textsf} % General font format for cover
 
-% ----------------------------------------------------------------------
+% ---------------------------------------------------------------------
 % Data fields for institution, author, advisor, co-advisor, etc.
-% ----------------------------------------------------------------------
+% ---------------------------------------------------------------------
 
 % Institution
 \providecommand{\institutionData}{}
@@ -83,17 +83,16 @@
 % Dedication
 \providecommand{\dedicationData}{}
 \newcommand{\dedication}[1]{\renewcommand{\dedicationData}{#1}}
-\newcommand{\dedicationFormat}{}
 
-% ----------------------------------------------------------------------
+% ---------------------------------------------------------------------
 % Conditional display of elements (only if non-empty)
-% ----------------------------------------------------------------------
+% ---------------------------------------------------------------------
 
 \newcommand{\ifNotEmpty}[2]{\ifthenelse{\not\equal{#1}{}}{#2}{}}
 
-% ----------------------------------------------------------------------
+% ---------------------------------------------------------------------
 % Cover Page Command
-% ----------------------------------------------------------------------
+% ---------------------------------------------------------------------
 
 \newcommand{\coverPage}{
     \vspace*{-\authorMargin}
@@ -125,9 +124,9 @@
     \end{center}
 }
 
-% ----------------------------------------------------------------------
+% ---------------------------------------------------------------------
 % Back Cover Command
-% ----------------------------------------------------------------------
+% ---------------------------------------------------------------------
 
 \newcommand{\backCover}{
     \vspace*{-\authorMargin}

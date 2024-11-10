@@ -1,4 +1,4 @@
-% -----------------------------------------------------------------------------
+% ----------------------------------------------------------------------------
 % chapter.tex
 %
 % This file defines the chapter and section environments, including:
@@ -10,7 +10,7 @@
 %
 % Redefinitions include handling of pretextual chapters, custom TOC entries,
 % and formatting of chapter and section headers.
-% -----------------------------------------------------------------------------
+% ----------------------------------------------------------------------------
 
 % Define command to allow optional starred sections
 \def\customSectionDefinition#1#2{\@ifstar{\@dblarg{#2}}{\@dblarg{#1}}}
@@ -22,7 +22,7 @@
     \ifthenelse{\boolean{inPretext}}{
         \ifthenelse{\boolean{afterTOC}} {
             \setboolean{inPretext}{false}
-            \BeginTextualPart
+            \beginTextualPart
         }{}
     }{}
     \global\@topnum\z@
@@ -85,18 +85,16 @@
 
 % Redefine \@chapter to manage TOC entry and chapter marking
 \def\@chapter[#1]#2 {
-    \customChapterMark{#1} % This command must precede addcontentsline
-    \ifnum \c@secnumdepth >\m@ne
+    \customChapterMark{#1}
+    \ifnum \c@secnumdepth > \m@ne
         \refstepcounter{chapter}
         \typeout{\@chapapp\space\thechapter.}
-        \ifthenelse{\boolean{afterTOC}}
-        {
+        \ifthenelse{\boolean{afterTOC}}{
             \customAddContentsLine{toc}{chapter}
             {\protect\numberline{\thechapter}#1}
         }{}
     \else
-        \ifthenelse{\boolean{afterTOC}}
-        {
+        \ifthenelse{\boolean{afterTOC}}{
             \customAddContentsLine{toc}{chapter}{#1}
         }{}
     \fi
@@ -126,7 +124,7 @@
 
 % Redefine \part to manage part numbering, TOC inclusion, and title formatting
 \def\@part[#1]#2{
-    \ifnum \c@secnumdepth >-2\relax
+    \ifnum \c@secnumdepth > -2\relax
         \refstepcounter{part}
         \customAddContentsLine{toc}{part}{\protect\numberline{\thepart}#1}
     \else
@@ -137,7 +135,7 @@
         \centering
         \interlinepenalty \@M
         \normalfont
-        \ifnum \c@secnumdepth >-2\relax
+        \ifnum \c@secnumdepth > -2\relax
             \partTitleFont\partTitleSize
             \ifthenelse{\boolean{uppercasePartTitles}}{
                 \MakeUppercase{\partname~\thepart}
@@ -157,14 +155,15 @@
 % Redefine \part* for starred parts without numbering
 \def\@spart#1{
     \customAddContentsLine{toc}{part}{#1} % Include part in TOC
-    \markboth{}{}
-    {\centering
+    \markboth{}{}{
+        \centering
         \interlinepenalty \@M
         \normalfont
         \partTitleFont\partSubtitleSize
         \ifthenelse{\boolean{uppercasePartTitles}}
         {\MakeUppercase{#1}}
-        {#1}\par}
+        {#1}\par
+    }
     \@endpart
 }
 
@@ -190,7 +189,7 @@
 % Starred section formatting, with optional inclusion in TOC
 \def\customStartStarSection#1#2#3#4#5{
     \@tempskipa #3\relax
-    \ifdim \@tempskipa>\z@
+    \ifdim \@tempskipa > \z@
         \begingroup #4 {
             \interlinepenalty \@M \centering
             \ifthenelse{\boolean{uppercaseSectionTitles}}
@@ -289,21 +288,21 @@
 % Defines how regular chapters (\chapter) are typeset
 \def\@makechapterhead#1{
     {
-            \normalfont\chapterSize\chapterTitleFont
-            \setSpacing{single} % Single line spacing for chapter titles
-            \vspace*{\spaceHeaderChapter} % Space above the chapter title
-            \noindent
-            \parbox[b]{\textwidth}{
-                \parbox[t]{4ex}{\thechapter} % Space between the chapter number and title
-                \parbox[t]{\textwidth-4ex-1ex}{
-                    \interlinepenalty\@M\raggedright
-                    \ifthenelse{\boolean{uppercasePartTitles}}
-                    {\MakeUppercase{#1}}
-                    {#1}
-                }
-                \vspace*{\spaceAfterChapter} % Space below the chapter title
-            }\\[0pt]\vspace{\offsetAfterChapter} % Offset for additional space
-        }
+        \normalfont\chapterSize\chapterTitleFont
+        \setSpacing{single} % Single line spacing for chapter titles
+        \vspace*{\spaceHeaderChapter} % Space above the chapter title
+        \noindent
+        \parbox[b]{\textwidth}{
+            \parbox[t]{4ex}{\thechapter} % Space between the chapter number and title
+            \parbox[t]{\textwidth-4ex-1ex}{
+                \interlinepenalty\@M\raggedright
+                \ifthenelse{\boolean{uppercasePartTitles}}
+                {\MakeUppercase{#1}}
+                {#1}
+            }
+            \vspace*{\spaceAfterChapter} % Space below the chapter title
+        }\\[0pt]\vspace{\offsetAfterChapter} % Offset for additional space
+    }
 }
 
 % Flag for alternate chapter title formatting
@@ -339,7 +338,7 @@
 
 % Redefine \l@chapter to apply page number styles in the TOC
 \renewcommand\l@chapter[2]{
-    \ifnum \c@tocdepth >\m@ne
+    \ifnum \c@tocdepth > \m@ne
         \addpenalty{-\@highpenalty}
         \vskip 1.0em \@plus\p@
         \setlength\@tempdima{1.5em}
@@ -370,7 +369,7 @@
 
 % Redefine \l@part to apply custom page number styles in the TOC
 \renewcommand\l@part[2]{
-    \ifnum \c@tocdepth  > -2 \relax
+    \ifnum \c@tocdepth  > -2\relax
         \addpenalty{-\@highpenalty}
         \addvspace{2.25em \@plus\p@}
         \begingroup

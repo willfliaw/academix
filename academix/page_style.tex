@@ -1,4 +1,4 @@
-% -----------------------------------------------------------------------------
+% ----------------------------------------------------------------------------
 % page_style.tex
 %
 % This file defines the following:
@@ -9,11 +9,11 @@
 %       * "ruledheader" (with underlined header)
 %   - Indentation settings for the first paragraph of each section
 %   - Sets the style for chapter titles
-% -----------------------------------------------------------------------------
+% ----------------------------------------------------------------------------
 
-% ----------------------------------------------------------------------
+% ---------------------------------------------------------------------
 % Font Styles for Header Elements
-% ----------------------------------------------------------------------
+% ---------------------------------------------------------------------
 
 \newcommand{\rightMarkFormat}{\small\itshape}   % Style for right header mark
 \newcommand{\leftMarkFormat}{\itshape}          % Style for left header mark
@@ -26,22 +26,16 @@
     {\markboth{#1}{#2}}
 }
 
-\newcommand{\custommarkright}[1]{
-    \ifthenelse{\boolean{nextOutOfTOC}}
-    {\markright{\nextMark}}
-    {\markright{#1}}
-}
-
-% ----------------------------------------------------------------------
+% ---------------------------------------------------------------------
 % Page Style: "header"
-% ----------------------------------------------------------------------
+% ---------------------------------------------------------------------
 % Defines a custom page style with headers for both odd and even pages
 
 \newcommand{\ps@header}{
-    \renewcommand{\@oddfoot}{} % No footer on odd pages
-    \renewcommand{\@evenfoot}{} % No footer on even pages
-    \renewcommand{\@oddhead}{{\rightMarkFormat\rightmark}\hfill{\thePageFormat\thepage}} % Right header for odd pages
-    \renewcommand{\@evenhead}{{\theMageFormat\thepage}\hfill{\leftmarkformat\leftmark}} % Left header for even pages
+    \renewcommand{\@oddfoot}{}
+    \renewcommand{\@evenfoot}{}
+    \renewcommand{\@oddhead}{{\rightMarkFormat\rightmark}\hfill{\thePageFormat\thepage}}
+    \renewcommand{\@evenhead}{{\thePageFormat\thepage}\hfill{\leftMarkFormat\leftmark}}
 
     % Ensure \chapter* shows the header
     \let\@mkboth\customMarkBoth
@@ -69,9 +63,9 @@
     }
 }
 
-% ----------------------------------------------------------------------
+% ---------------------------------------------------------------------
 % Page Style: "plainheader"
-% ----------------------------------------------------------------------
+% ---------------------------------------------------------------------
 % A simpler page style with just the page number in the header
 
 \newcommand{\ps@plainheader}{
@@ -106,20 +100,20 @@
     }
 }
 
-% ----------------------------------------------------------------------
+% ---------------------------------------------------------------------
 % Page Style: "ruledheader"
-% ----------------------------------------------------------------------
+% ---------------------------------------------------------------------
 % A page style with underlined headers for both odd and even pages
 
 \newcommand{\ps@ruledheader}{
-    \renewcommand{\@oddfoot}{} % No footer on odd pages
-    \renewcommand{\@evenfoot}{} % No footer on even pages
-    \renewcommand{\@oddhead}{
-        \underline{\makebox[\textwidth]{\raisebox{-.5ex}{}{\rightmarkformat\rightmark}\hfill{\thePageFormat\thepage}}}
-    }
-    \renewcommand{
-        \@evenhead}{\underline{\makebox[\textwidth]{\raisebox{-.5ex}{}{\thePageFormat\thepage}\hfill{\leftmarkformat\leftmark}}}
-    }
+    \renewcommand{\@oddfoot}{}
+    \renewcommand{\@evenfoot}{}
+    \renewcommand{\@oddhead}
+    {\underline{\makebox[\textwidth]{\raisebox{-.5ex}{}
+    {\rightMarkFormat\rightmark}\hfill{\thePageFormat\thepage}}}}
+    \renewcommand{\@evenhead}
+    {\underline{\makebox[\textwidth]{\raisebox{-.5ex}{}
+    {\thePageFormat\thepage}\hfill{\leftMarkFormat\leftmark}}}}
 
     % Ensure \chapter* shows the header
     \let\@mkboth\customMarkBoth
@@ -147,9 +141,9 @@
     }
 }
 
-% ----------------------------------------------------------------------
+% ---------------------------------------------------------------------
 % Indenting First Paragraph of Each Section
-% ----------------------------------------------------------------------
+% ---------------------------------------------------------------------
 
 % Conditionally load the indentfirst package if the first paragraph should be indented
 \ifthenelse{\boolean{indentFirstParagraph}}

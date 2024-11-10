@@ -1,4 +1,4 @@
-% -----------------------------------------------------------------------------
+% ----------------------------------------------------------------------------
 % appendix.tex
 %
 % This file defines the environment and formatting for appendices.
@@ -6,36 +6,36 @@
 %   - Customization of appendix chapters
 %   - Formatting of appendix titles and numbering (A, B, C, etc.)
 %   - Automatic inclusion of appendices in the Table of Contents (TOC)
-% -----------------------------------------------------------------------------
+% ----------------------------------------------------------------------------
 
-% ----------------------------------------------------------------------
+% ---------------------------------------------------------------------
 % Appendix Chapter Customization
-% ----------------------------------------------------------------------
+% ---------------------------------------------------------------------
 
 % Command to set the name of the appendix chapter
 \newcommand{\anApChapterName}{\relax}
 
 % Symbol used as a separator (double dash) between appendix title and content
-\newcommand*{\crossbar}{\appSepSym$\!$\appSepSym}
+\newcommand*{\crossbar}{\anApSeparator$\!$\anApSeparator}
 
 % Custom command to handle appendix chapters
-\def\@anapchapter[#1]#2{
+\def\@anApChapter[#1]#2{
     \refstepcounter{chapter}
     \ifthenelse{\boolean{useAnApName}}{
         \begingroup
-        \ifthenelse{\equal{#1}{}} % If no custom title is provided
-        {\def\thechapter{\anApChapterName{} \Alph{chapter}}} % Set appendix chapter name with letter (A, B, C, etc.)
-        {\def\thechapter{\anApChapterName{} \Alph{chapter} \crossbar{} #1}} % Add separator if custom title exists
-        \chaptermark{} % Mark the chapter in headers
+        \ifthenelse{\equal{#1}{}}
+        {\def\thechapter{\anApChapterName{} \Alph{chapter}}}
+        {\def\thechapter{\anApChapterName{} \Alph{chapter}{} \crossbar{} #1}}
+        \customChapterMark{}
         \endgroup
         \if@twocolumn
-            \@topnewpage[\@makeAppendixChapterHead{#2}]
+            \@topnewpage[\@makeAnApChapterHeader{#2}]
         \else
-            \@makeAppendixChapterHead{#2}
+            \@makeAnApChapterHeader{#2}
             \@afterheading
         \fi
     }{
-        \chaptermark{#1} % Mark chapter without appendix name
+        \customChapterMark{#1}
         \if@twocolumn
             \@topnewpage[\@makeChapterHead{#2}]
         \else
@@ -45,7 +45,7 @@
     }
 
     % Add appendix to Table of Contents
-    \ifnum \c@secnumdepth >\m@ne
+    \ifnum \c@secnumdepth > \m@ne
         \typeout{\@chapapp\space\thechapter.}
         \ifthenelse{\boolean{useAnApName}}{
             \ifthenelse{\equal{#1}{}}{
@@ -54,7 +54,7 @@
                 \customAddContentsLine{toc}{chapter}{\anApChapterName{} \thechapter{} \crossbar{} #1}
             }
         }{
-            \customAddContentsLine{toc}{chapter}{\protect\numberline{\thechapter}#1}
+            \customAddContentsLine{toc}{chapter}{\protect\numberline{\thechapter} #1}
         }
     \else
         \customAddContentsLine{toc}{chapter}{#1}
@@ -62,67 +62,66 @@
     \par
 }
 
-% ----------------------------------------------------------------------
+% ---------------------------------------------------------------------
 % Appendix Formatting
-% ----------------------------------------------------------------------
+% ---------------------------------------------------------------------
 
 % Define indentation and size for appendix
 \newlength{\anApIndent}
 \setlength{\anApIndent}{0cm}
 \newcommand{\anApSize}{\LARGE}
 
-% Command for placing content after appendix
-\newcommand{\anApPostTitle}{\relax}
-
 % Define how appendix chapters are typeset
-\def\@makeAppendixChapterHead#1{
+\def\@makeAnApChapterHeader#1{
     {
         \normalfont\chapterTitleFont\anApSize
         \setSpacing{single}
         \ifthenelse{\boolean{indentAnAp}}{
             \ifthenelse{\boolean{uppercaseAnApTitles}}{
-                \settowidth{\anApIndent}{\MakeUppercase{\anApChapterName} \thechapter{} \crossbar{}}
+                \settowidth{\anApIndent}{\MakeUppercase{\anApChapterName} \thechapter{} \crossbar{} }
             }{
-                \settowidth{\anApIndent}{\anApChapterName \thechapter{} \crossbar{}}
+                \settowidth{\anApIndent}{\anApChapterName \thechapter{} \crossbar{} }
             }
         }{}
-        \vspace*{\appTopMargin}
+        \vspace*{\anApTopMargin}
 
-        % Line spacing and formatting for the appendix title
-        \raggedright\setSpacing{singleSpacing}\par
+        \raggedright\setSpacing{single}\par
         \begin{list}{}{
             \setlength{\listparindent}{0cm}
             \setlength{\itemindent}{-\anApIndent}
             \setlength{\rightmargin}{0cm}
             \setlength{\leftmargin}{\anApIndent}
-            \setlength{\parsep}{0pt}}
-            \item % Display the appendix title
+            \setlength{\parsep}{0pt}
+        }
+            \item
                 \ifthenelse{\equal{#1}{}}{
                     \ifthenelse{\boolean{uppercaseAnApTitles}}
                     {\MakeUppercase{\anApChapterName}}
                     {\anApChapterName}
-                    \thechapter \anApPostTitle
+                    \thechapter
                 }{
                     \ifthenelse{\boolean{uppercaseAnApTitles}}
                     {\MakeUppercase{\anApChapterName}}
                     {\anApChapterName}
-                    \thechapter{} \crossbar{} \anApPostTitle
+                    \thechapter{} \crossbar{} \relax
                     \ifthenelse{\boolean{uppercasePartTitles}}
                     {\MakeUppercase{#1}}
                     {#1}
                 }
         \end{list}
-        \par\vspace{\appBottomMargin}
+        \par\vspace{\anApBottomMargin}
     }
 }
-% ----------------------------------------------------------------------
+
+% ---------------------------------------------------------------------
 % Appendix Environment
-% ----------------------------------------------------------------------
+% ---------------------------------------------------------------------
 
 % Define behavior when the \appendix command is called
 \renewcommand{\appendix}{
-    \setcounter{chapter}{0} % Reset chapter counter for appendices (start from "A")
+    \setcounter{chapter}{0}
     \resetSubCounters{chapter}
-    \gdef\thechapter{\Alph{chapter}} % Set chapter numbering to letters (A, B, C, etc.)
-    \renewcommand{\anApChapterName}{\appendixName} % Set appendix title (e.g., "Appendix")
+    \gdef\thechapter{\Alph{chapter}}
+    \renewcommand{\anApChapterName}{\appendixName}
+    \global\let\@chapter\@anApChapter
 }

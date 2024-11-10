@@ -1,4 +1,4 @@
-% -----------------------------------------------------------------------------
+% ----------------------------------------------------------------------------
 % definitions.tex
 %
 % This file contains the main formatting definitions for the document class.
@@ -11,11 +11,11 @@
 %   - chapter title and section title spacing adjustments
 %   - field titles (Acknowledgements, Abstract, Resumo, Advisor, etc.)
 %   - commands for customization of degree information and text blocks
-% -----------------------------------------------------------------------------
+% ----------------------------------------------------------------------------
 
-% -----------------------------------------------------------------------------
+% ----------------------------------------------------------------------------
 % FORMATTING DEFINITIONS
-% -----------------------------------------------------------------------------
+% ----------------------------------------------------------------------------
 
 % Line spacing definitions (single, one-and-a-half, and double)
 \newcommand*{\singleSpacingRate}{1.0}
@@ -28,7 +28,7 @@
 
 % Separator symbol used in figure/table captions and appendices
 \newcommand{\captionSeparator}{ - }
-\newcommand{\appendixSeparator}{ - }
+\newcommand{\anApSeparator}{-}
 
 % Margin sizes
 \newcommand{\topMargin}{2.0cm}
@@ -63,24 +63,22 @@
 \newcommand{\offsetAfterChapter}{-1cm} % Necessary offset after chapter title
 
 % Margin before and after appendix titles (in points)
-\newcommand{\appendixTopMargin}{30pt}
-\newcommand{\appendixBottomMargin}{50pt}
+\newcommand{\anApTopMargin}{30pt}
+\newcommand{\anApBottomMargin}{50pt}
 
 % Command to insert a minipage block with text, useful for title pages
-\newcommand{\minipageText}[1]{
-  \comment{\vspace{1.0cm} #1}
-}
+\newcommand{\minipageText}[1]{\comment{\vspace{1.0cm} #1}}
 
 % Field titles for various sections (can be customized or translated)
 \newcommand{\acknowledgmentName}{Acknowledgment}
 \newcommand{\abstractName}{Abstract}
-\newcommand{\summaryName}{Summary}
+\newcommand{\secondAbstractName}{Résumé}
 \newcommand{\advisorTitle}{Advisor}
 \newcommand{\coadvisorTitle}{Co-Advisor}
 \newcommand{\concentrationField}{Concentration Field}
-\newcommand{\listAbbreviationName}{List of Abbreviations}
-\newcommand{\listSymbolName}{List of Symbols}
-\newcommand{\listFigureName}{List of Figures}
-\newcommand{\listTableName}{List of Tables}
+\newcommand{\listOfAbbreviationName}{List of Abbreviations}
+\newcommand{\listOfSymbolsName}{List of Symbols}
+\newcommand{\listOfFiguresName}{List of Figures}
+\newcommand{\listOfTablesName}{List of Tables}
 \newcommand{\referenceName}{References}
 \newcommand{\appendixName}{Appendix}

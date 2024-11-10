@@ -1,10 +1,10 @@
-% -----------------------------------------------------------------------------
+% ----------------------------------------------------------------------------
 % index.tex
 %
 % This file defines the environment for the document's index.
 % It supports automatic inclusion in the Table of Contents (TOC),
 % handles balanced or unbalanced columns, and removes capital page marks.
-% -----------------------------------------------------------------------------
+% ----------------------------------------------------------------------------
 
 % Boolean flag for determining if the index should be balanced across columns
 \newboolean{balancedIndex}
@@ -13,9 +13,9 @@
 % Command to disable balanced index columns
 \newcommand*\UnbalancedIndex{\setboolean{balancedIndex}{false}}
 
-% -----------------------------------------------------------------------------
+% ----------------------------------------------------------------------------
 % Custom index Environment
-% -----------------------------------------------------------------------------
+% ----------------------------------------------------------------------------
 % A custom version of the `index` environment:
 % - No capital page marks
 % - Automatically included in the Table of Contents

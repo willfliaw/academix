@@ -1,5 +1,5 @@
-\def\academixData{2024/10/19}
-\def\academixVersion{v1.0}
+\def\academixData{2024/11/09}
+\def\academixVersion{v0.0}
 
 \NeedsTeXFormat{LaTeX2e}
 \ProvidesClass{academix/academix}[\academixData\space version \academixVersion\space APA Class]

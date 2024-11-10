@@ -1,4 +1,4 @@
-% -----------------------------------------------------------------------------
+% ----------------------------------------------------------------------------
 % line_spacing.tex
 %
 % This file defines commands and environments to control line spacing
@@ -8,7 +8,7 @@
 %   - Custom environments for single, one-and-a-half, and double spacing
 %   - Handling of missing `setspace` package with warnings
 %   - Default line spacing setting based on class options
-% -----------------------------------------------------------------------------
+% ----------------------------------------------------------------------------
 
 
 \IfFileExists{setspace.sty}
@@ -39,9 +39,9 @@
 % Default to no extra spacing around display math (equivalent to 'nodisplayskipstretch')
 \setDisplaySkipStretch{1.0}
 
-% -----------------------------------------------------------------------------
+% ----------------------------------------------------------------------------
 % Custom Spacing Command
-% -----------------------------------------------------------------------------
+% ----------------------------------------------------------------------------
 % \setSpacing{} - Activates the given line spacing stretch. Accepts:
 %   - "single" for single spacing
 %   - "onehalf" for one-and-a-half spacing
@@ -58,9 +58,9 @@
     }
 }
 
-% -----------------------------------------------------------------------------
+% ----------------------------------------------------------------------------
 % Environments for Specific Spacing
-% -----------------------------------------------------------------------------
+% ----------------------------------------------------------------------------
 % These environments provide quick methods for setting specific line spacing.
 
 % Environment for single spacing
@@ -75,9 +75,9 @@
 \newenvironment{doubleSpacing}
 {\begin{spacing}{\doubleSpacingRate}}{\end{spacing}}
 
-% -----------------------------------------------------------------------------
+% ----------------------------------------------------------------------------
 % Default Document Settings and Hyperref Package Detection
-% -----------------------------------------------------------------------------
+% ----------------------------------------------------------------------------
 
 % Boolean to detect if `hyperref` is loaded (for handling hyperlinks in the TOC)
 \newboolean{hyperrefLoaded}

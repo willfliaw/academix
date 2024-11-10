@@ -1,4 +1,4 @@
-% -----------------------------------------------------------------------------
+% ----------------------------------------------------------------------------
 % commands.tex
 %
 % This file defines custom commands and environments for formatting, including:
@@ -8,11 +8,11 @@
 %   - Abstract environments
 %   - Font selection and auto bold math
 %   - Section and subsection counter limits
-% -----------------------------------------------------------------------------
+% ----------------------------------------------------------------------------
 
-% ----------------------------------------------------------------------
+% ---------------------------------------------------------------------
 % Dedication Page
-% ----------------------------------------------------------------------
+% ---------------------------------------------------------------------
 
 % Command to create a dedication page with optional content
 \newcommand{\dedicationPage}{
@@ -34,9 +34,9 @@
     \end{titlepage}
 }
 
-% ----------------------------------------------------------------------
+% ---------------------------------------------------------------------
 % Acknowledgement Environment
-% ----------------------------------------------------------------------
+% ---------------------------------------------------------------------
 
 % Custom environment to format the acknowledgement section
 \newenvironment{acknowledgement}{
@@ -47,9 +47,9 @@
     \end{oneHalfSpacing}\newpage
 }
 
-% ----------------------------------------------------------------------
+% ---------------------------------------------------------------------
 % Abstract Environment
-% ----------------------------------------------------------------------
+% ---------------------------------------------------------------------
 
 % Redefinition of the abstract environment
 \renewenvironment{abstract}{
@@ -60,22 +60,22 @@
     \end{oneHalfSpacing}\newpage
 }
 
-% ----------------------------------------------------------------------
-% Summary Environment
-% ----------------------------------------------------------------------
+% ---------------------------------------------------------------------
+% Second Abstract (2nd language) Environment
+% ---------------------------------------------------------------------
 
-% Custom environment to format the summary
-\newenvironment{summary}{
+% Custom environment to format the second abstract
+\newenvironment{secondAbstract}{
     \if@openright\cleardoublepage\else\clearpage\fi%
-    \otherheadtrue\pretextualChapter{\summaryName}
+    \otherheadtrue\pretextualChapter{\secondAbstractName}
     \begin{oneHalfSpacing}
         }{
     \end{oneHalfSpacing}\newpage
 }
 
-% ----------------------------------------------------------------------
+% ---------------------------------------------------------------------
 % Font Selection
-% ----------------------------------------------------------------------
+% ---------------------------------------------------------------------
 
 % Font choice: Times with Helvetica as sans serif
 \ifthenelse{\boolean{useTimesFont}}{
@@ -97,9 +97,9 @@
 }
 {}
 
-% ----------------------------------------------------------------------
+% ---------------------------------------------------------------------
 % Auto Bold Math (Apply bold math in bold text environments)
-% ----------------------------------------------------------------------
+% ---------------------------------------------------------------------
 
 \AtBeginDocument{%
     \ifthenelse{\boolean{autoBoldMath}\and\not\isundefined{\mv@bold}}% If auto bold math is enabled
@@ -117,9 +117,9 @@
     {}
 }
 
-% ----------------------------------------------------------------------
+% ---------------------------------------------------------------------
 % Section and Subsection Counters
-% ----------------------------------------------------------------------
+% ---------------------------------------------------------------------
 
 % Set TOC depth to show up to subsubsection
 \setcounter{tocdepth}{4}
