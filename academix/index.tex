@@ -11,7 +11,7 @@
 \setboolean{balancedIndex}{true}
 
 % Command to disable balanced index columns
-\newcommand*\UnbalancedIndex{\setboolean{balancedIndex}{false}}
+\newcommand*\unbalancedIndex{\setboolean{balancedIndex}{false}}
 
 % ----------------------------------------------------------------------------
 % Custom index Environment
@@ -20,8 +20,8 @@
 % - No capital page marks
 % - Automatically included in the Table of Contents
 % - Supports balanced and unbalanced columns for the index
-\renewenvironment{index}
-{
+
+\renewenvironment{index} {
     % Check if the document is in two-column mode, and temporarily switch to one-column
     \ifthenelse{\boolean{@twocolumn}}
     {\setboolean{restoreTwoColumnMode}{true}\onecolumn}
@@ -41,28 +41,24 @@
     {\customAddcontentsLine{toc}{chapter}{\indexname}}
     {}
 
-    % Create the chapter title for the index
-    \@makeschapterhead{\indexname}
-    \@afterheading % Formatting adjustments after the heading
+    \@makeSChapterHead{\indexname}
+    \@afterheading
 
-    % Begin the index, setting up column widths and other layout parameters
     \begingroup
-    \setlength{\columnsep}{35pt} % Space between columns
-    \setlength{\columnseprule}{0pt} % No separator rule between columns
+    \setlength{\columnsep}{35pt}
+    \setlength{\columnseprule}{0pt}
     \ifthenelse{\boolean{balancedIndex}}
-    {\begin{multicols}{2}} % Start balanced two-column layout
-    {\begin{multicols*}{2}} % Start unbalanced two-column layout
-            \setSpacing{single} % Use single line spacing
-            \setlength{\parindent}{0cm} % No paragraph indentation
-            \setlength{\parskip}{.3pt} % Small space between paragraphs
-            \let\item\@idxitem % Define how index items are displayed
-            }
-            {
-            % End the index environment, closing the multicolumn environment
-            \ifthenelse{\boolean{balancedIndex}}
-            {\end{multicols}} % End balanced two-column layout
-            {\end{multicols*}} % End unbalanced two-column layout
-    \endgroup % End the group for the index layout settings
+    {\begin{multicols}{2}}
+    {\begin{multicols*}{2}}
+    \setSpacing{single}
+    \setlength{\parindent}{0cm}
+    \setlength{\parskip}{.3pt}
+    \let\item\@idxitem % Define how index items are displayed
+}{
+    \ifthenelse{\boolean{balancedIndex}}
+    {\end{multicols}}
+    {\end{multicols*}}
+    \endgroup
 
     % Restore two-column mode if it was originally enabled
     \ifthenelse{\boolean{restoreTwoColumnMode}}{\twocolumn}{}

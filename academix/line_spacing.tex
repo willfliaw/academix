@@ -48,12 +48,13 @@
 %   - "double" for double spacing
 %   - A custom numeric value for specific line spacing
 \newcommand{\setSpacing}[1]{
-    \ifthenelse{\equal{#1}{single}}{\setstretch{\singleSpacingRate}}
-    {
-        \ifthenelse{\equal{#1}{oneHalf}}{\setstretch{\oneHalfSpacing}}
-        {
-            \ifthenelse{\equal{#1}{double}}{\setstretch{\doubleSpacing}}
-            {\setstretch{#1}} % Otherwise, use the custom spacing value
+    \ifthenelse{\equal{#1}{single}}
+    {\setstretch{\singleSpacingRate}}{
+        \ifthenelse{\equal{#1}{oneHalf}}
+        {\setstretch{\oneHalfSpacing}}{
+            \ifthenelse{\equal{#1}{double}}
+            {\setstretch{\doubleSpacing}}
+            {\setstretch{#1}}
         }
     }
 }

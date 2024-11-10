@@ -95,19 +95,18 @@
             \customAddContentsLine{toc}{chapter}{#1}
         }{}
     \fi
-    \if@twocolumn\@topnewpage[\@makechapterhead{#2}]
+    \if@twocolumn\@topnewpage[\@makeChapterHead{#2}]
     \else
-        \@makechapterhead{#2}\@afterheading
+        \@makeChapterHead{#2}\@afterheading
     \fi\par
 }
 
 % Redefine \@schapter to behave similarly to \@chapter
 \def\@schapter#1 {
     \if@twocolumn
-        \@topnewpage[\@makeschapterhead{#1}]
+        \@topnewpage[\@makeSChapterHead{#1}]
     \else
-        \@makeschapterhead{#1}
-        \@afterheading
+        \@makeSChapterHead{#1}\@afterheading
     \fi
     \@mkboth{#1}{#1}
     \ifthenelse{\boolean{includeInTOC}}{
@@ -133,16 +132,15 @@
         \interlinepenalty \@M
         \normalfont
         \ifnum \c@secnumdepth > -2\relax
-            \partTitleFont\partTitleSize
-            \ifthenelse{\boolean{uppercasePartTitles}}{
-                \MakeUppercase{\partname~\thepart}
-            }
+            \chapterPartTitleFont\chapterPartTitleSize
+            \ifthenelse{\boolean{uppercaseChapterPartTitles}}
+            {\MakeUppercase{\partname~\thepart}}
             {\partname~\thepart}
             \par
             \vskip 20\p@
         \fi
-        \partTitleFont\partSubtitleSize
-        \ifthenelse{\boolean{uppercasePartTitles}}
+        \chapterPartTitleFont\chapterPartTitleSize
+        \ifthenelse{\boolean{uppercaseChapterPartTitles}}
         {\MakeUppercase{#2}}
         {#2}\par
     }
@@ -156,8 +154,8 @@
         \centering
         \interlinepenalty \@M
         \normalfont
-        \partTitleFont\partSubtitleSize
-        \ifthenelse{\boolean{uppercasePartTitles}}
+        \partTitleFont\chapterPartTitleSize
+        \ifthenelse{\boolean{uppercaseChapterPartTitles}}
         {\MakeUppercase{#1}}
         {#1}\par
     }
@@ -267,38 +265,37 @@
 }
 
 % Define the font for chapter titles
-\ifthenelse{\boolean{uppercasePartTitles}}
-{\newcommand{\chapterTitleFont}{\bfseries\upshape}}
-{\newcommand{\chapterTitleFont}{\bfseries\itshape}}
+\ifthenelse{\boolean{uppercaseChapterPartTitles}}
+{\newcommand{\chapterPartTitleFont}{\bfseries\upshape}}
+{\newcommand{\chapterPartTitleFont}{\bfseries\itshape}}
 
 % Font for chapter titles in TOC
-\newcommand{\TOCChapterFont}{\chapterTitleFont\upshape}
+\newcommand{\TOCChapterFont}{\chapterPartTitleFont\upshape}
 
 % Define the font for section titles
 \newcommand{\sectionTitleFont}{\bfseries}
 
 % Define sizes for chapter and part
-\newcommand{\chapterSize}{\normalsize}
-\newcommand{\uppercaseChapterSize}{\normalsize}
+\newcommand{\chapterPartTitleSize}{\normalsize}
 \newcommand{\titleSize}{\Large}
 
 % Defines how regular chapters (\chapter) are typeset
-\def\@makechapterhead#1{
+\def\@makeChapterHead#1{
     {
-        \normalfont\chapterSize\chapterTitleFont
-        \setSpacing{single} % Single line spacing for chapter titles
-        \vspace*{\spaceHeaderChapter} % Space above the chapter title
+        \normalfont\chapterPartTitleSize\chapterPartTitleFont
+        \setSpacing{single}
+        \vspace*{\chapterTitleTopMargin}
         \noindent
         \parbox[b]{\textwidth}{
             \parbox[t]{4ex}{\thechapter} % Space between the chapter number and title
             \parbox[t]{\textwidth-4ex-1ex}{
                 \interlinepenalty\@M\raggedright
-                \ifthenelse{\boolean{uppercasePartTitles}}
+                \ifthenelse{\boolean{uppercaseChapterPartTitles}}
                 {\MakeUppercase{#1}}
                 {#1}
             }
-            \vspace*{\spaceAfterChapter} % Space below the chapter title
-        }\\[0pt]\vspace{\offsetAfterChapter} % Offset for additional space
+            \vspace*{\chapterTitleBottomMargin}
+        }\\[0pt]\vspace{\offsetAfterChapter}
     }
 }
 
@@ -307,12 +304,11 @@
 \otherheadfalse
 
 % Defines how starred chapters (\chapter*) are typeset
-\def\@makeschapterhead#1{
+\def\@makeSChapterHead#1{
     \ifotherhead
-        % Alternate format for starred chapter titles
         \vspace*{-1.2cm}\par {
-            \centering\normalfont\chapterSize\chapterTitleFont%
-            \ifthenelse{\boolean{uppercasePartTitles}}
+            \centering\normalfont\chapterPartTitleSize\chapterPartTitleFont%
+            \ifthenelse{\boolean{uppercaseChapterPartTitles}}
             {\MakeUppercase{#1}}
             {#1}
             \par
@@ -322,8 +318,8 @@
         \otherheadfalse % Reset flag
     \else
         \vspace*{0pt}\par {
-            \centering\normalfont\chapterSize\chapterTitleFont
-            \ifthenelse{\boolean{uppercasePartTitles}}
+            \centering\normalfont\chapterPartTitleSize\chapterPartTitleFont
+            \ifthenelse{\boolean{uppercaseChapterPartTitles}}
             {\MakeUppercase{#1}}
             {#1}
             \par
@@ -357,7 +353,7 @@
 }
 
 % Redefine \part to manage part numbering, TOC inclusion, and title formatting
-\renewcommand\part{
+\renewcommand\part {
     \if@openright\cleardoublepage\else\clearpage\fi
     \thispagestyle{\chapterTitlePageStyle}
     \if@twocolumn\onecolumn\@tempswatrue\else\@tempswafalse\fi
@@ -386,7 +382,7 @@
 }
 
 % Redefine \section to apply custom styles and TOC inclusion
-\renewcommand\section{
+\renewcommand\section {
     \customStartSection{section}{1}{\z@}
     {-3.5ex \@plus -1ex \@minus -.2ex}
     {2.3ex \@plus.2ex}
@@ -394,7 +390,7 @@
 }
 
 % Redefine \subsection with custom styles
-\renewcommand\subsection{
+\renewcommand\subsection {
     \customStartSection{subsection}{2}{\z@}
     {-3.25ex \@plus -1ex \@minus -.2ex}
     {1.5ex \@plus .2ex}
@@ -402,7 +398,7 @@
 }
 
 % Redefine \subsubsection with custom styles
-\renewcommand\subsubsection{
+\renewcommand\subsubsection {
     \customStartSection{subsubsection}{3}{\z@}
     {-3.25ex \@plus -1ex \@minus -.2ex}
     {1.5ex \@plus .2ex}
@@ -410,7 +406,7 @@
 }
 
 % Redefine \paragraph with custom styles
-\renewcommand\paragraph{
+\renewcommand\paragraph {
     \customStartSection{paragraph}{4}{\z@}
     {3.25ex \@plus1ex \@minus.2ex}
     {-1em}
@@ -418,7 +414,7 @@
 }
 
 % Redefine \subparagraph with custom styles
-\renewcommand\subparagraph{
+\renewcommand\subparagraph {
     \customStartSection{subparagraph}{5}{\parindent}
     {3.25ex \@plus1ex \@minus .2ex}
     {-1em}

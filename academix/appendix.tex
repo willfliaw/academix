@@ -26,7 +26,7 @@
         \ifthenelse{\equal{#1}{}}
         {\def\thechapter{\anApChapterName{} \Alph{chapter}}}
         {\def\thechapter{\anApChapterName{} \Alph{chapter}{} \crossbar{} #1}}
-        \customChapterMark{\Alph{chapter}{} \crossbar{} #1}
+        \customChapterMark{#1}
         \endgroup
         \if@twocolumn
             \@topnewpage[\@makeAnApChapterHead{#2}]
@@ -37,9 +37,9 @@
     }{
         \customChapterMark{#1}
         \if@twocolumn
-            \@topnewpage[\@makechapterhead{#2}]
+            \@topnewpage[\@makeChapterHead{#2}]
         \else
-            \@makechapterhead{#2}
+            \@makeChapterHead{#2}
             \@afterheading
         \fi
     }
@@ -74,7 +74,7 @@
 % Define how appendix chapters are typeset
 \def\@makeAnApChapterHead#1{
     {
-        \normalfont\chapterTitleFont\anApSize
+        \normalfont\chapterPartTitleFont\anApSize
         \setSpacing{single}
         \ifthenelse{\boolean{indentAnAp}}{
             \ifthenelse{\boolean{uppercaseAnApTitles}}{
@@ -83,7 +83,7 @@
                 \settowidth{\anApIndent}{\anApChapterName \thechapter{} \crossbar{} }
             }
         }{}
-        \vspace*{\anApTopMargin}
+        \vspace*{\anApTitleTopMargin}
 
         \raggedright\setSpacing{single}\par
         \begin{list}{}{
@@ -103,13 +103,13 @@
                     \ifthenelse{\boolean{uppercaseAnApTitles}}
                     {\MakeUppercase{\anApChapterName}}
                     {\anApChapterName}
-                    \thechapter{} \crossbar{} \relax
-                    \ifthenelse{\boolean{uppercasePartTitles}}
+                    \thechapter{} \crossbar{} %
+                    \ifthenelse{\boolean{uppercaseChapterPartTitles}}
                     {\MakeUppercase{#1}}
                     {#1}
                 }
         \end{list}
-        \par\vspace{\anApBottomMargin}
+        \par\vspace{\anApTitleBottomMargin}
     }
 }
 
@@ -123,5 +123,18 @@
     \resetSubCounters{chapter}
     \gdef\thechapter{\Alph{chapter}}
     \renewcommand{\anApChapterName}{\appendixName}
+    \global\let\@chapter\@anApChapter
+}
+
+% ---------------------------------------------------------------------
+% Annex Environment
+% ---------------------------------------------------------------------
+
+% Define behavior when the \annex command is called
+\newcommand{\annex}{
+    \setcounter{chapter}{0}
+    \resetSubCounters{chapter}
+    \gdef\thechapter{\Alph{chapter}}
+    \renewcommand{\anApChapterName}{\annexName}
     \global\let\@chapter\@anApChapter
 }

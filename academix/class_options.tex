@@ -89,12 +89,12 @@
 
 % Use capital letters for chapter or section titles
 % -------------------------------------------------
-\newboolean{uppercasePartTitles}
-\setboolean{uppercasePartTitles}{false}
+\newboolean{uppercaseChapterPartTitles}
+\setboolean{uppercaseChapterPartTitles}{false}
 \newboolean{uppercaseSectionTitles}
 \setboolean{uppercaseSectionTitles}{false}
 
-\DeclareOption{upppercaseChapter}   {\setboolean{uppercasePartTitles}{true}}
+\DeclareOption{upppercaseChapter}   {\setboolean{uppercaseChapterPartTitles}{true}}
 \DeclareOption{upppercaseSection}   {\setboolean{uppercaseSectionTitles}{true}}
 
 % Control case style for annex and appendix titles
