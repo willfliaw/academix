@@ -2,7 +2,7 @@
 % class_options.tex
 %
 % This file defines various options for the class, including:
-%   - page numbering schemes (IEEE-style, plain, Roman-Arabic mix)
+%   - page numbering schemes (ABNT-style, plain, Roman-Arabic mix)
 %   - inclusion of bibliography, index, and starred chapters in the TOC
 %   - style of page numbers in the Table of Contents
 %   - independent numbering for figures and tables (independent of sections)
@@ -86,6 +86,15 @@
 \DeclareOption{ruledHeader}       {\setboolean{usePageHeader}{true}\renewcommand{\pageHeaderType}{ruled}}
 \DeclareOption{fancyPlainHeader}  {\setboolean{usePageHeader}{true}\renewcommand{\pageHeaderType}{fancyPlain}}
 \ExecuteOptions{plainHeader}
+
+% Start chapters on a new page
+% ----------------------------
+\newboolean{newPageChapter}
+\providecommand{\pageHeaderType}{\relax}
+\DeclareOption{newPageChapter}      {\setboolean{newPageChapter}{true}}
+\DeclareOption{samePageChapter}      {\setboolean{newPageChapter}{false}}
+\ExecuteOptions{newPageChapter}
+
 
 % Use capital letters for chapter or section titles
 % -------------------------------------------------

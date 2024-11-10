@@ -14,7 +14,9 @@
 
 % Redefine \chapter to include custom page style and manage pretextual chapters
 \renewcommand\chapter {
-    \if@openright\cleardoublepage\else\clearpage\fi
+    \ifthenelse{\boolean{newPageChapter}}{
+        \if@openright\cleardoublepage\else\clearpage\fi
+    }{}
     \thispagestyle{\chapterTitlePageStyle}
     \ifthenelse{\boolean{inPretext}}{
         \ifthenelse{\boolean{afterTOC}}{
@@ -284,11 +286,11 @@
     {
         \normalfont\chapterPartTitleSize\chapterPartTitleFont
         \setSpacing{single}
-        \vspace*{\chapterTitleTopMargin}
+        \vspace{\chapterTitleTopMargin}
         \noindent
         \parbox[b]{\textwidth}{
-            \parbox[t]{4ex}{\thechapter} % Space between the chapter number and title
-            \parbox[t]{\textwidth-4ex-1ex}{
+            \parbox[t]{4ex}{\thechapter} % Space for the chapter number and title
+            \parbox[t]{\textwidth - 4ex - 1ex}{
                 \interlinepenalty\@M\raggedright
                 \ifthenelse{\boolean{uppercaseChapterPartTitles}}
                 {\MakeUppercase{#1}}
@@ -307,7 +309,7 @@
 \def\@makeSChapterHead#1{
     \ifotherhead
         \vspace*{-1.2cm}\par {
-            \centering\normalfont\chapterPartTitleSize\chapterPartTitleFont%
+            \centering\normalfont\chapterPartTitleSize\chapterPartTitleFont
             \ifthenelse{\boolean{uppercaseChapterPartTitles}}
             {\MakeUppercase{#1}}
             {#1}
