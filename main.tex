@@ -168,8 +168,8 @@
 % -------------
 
 % Pre-textual elements
-\pagenumbering{roman}
 \backCover
+\pagenumbering{roman}
 \dedicationPage
 \input{doc/acknowledgement}
 \input{doc/abstract}
@@ -180,9 +180,9 @@
 \tableofcontents
 
 % Textual elements
+\pagenumbering{arabic}
 \input{doc/introduction}
 
-\pagenumbering{arabic}
 \input{doc/literature}
 
 \input{doc/methodology}
@@ -193,7 +193,7 @@
 
 \input{doc/conclusion}
 
-Post-textual elements
+% Post-textual elements
 \bibliography{doc/bibliography}
 \appendix
 \input{doc/apA}
